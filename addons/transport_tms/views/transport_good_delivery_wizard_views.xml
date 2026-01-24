@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Wizard Form View: Assign Vehicle, Driver, Delivery Location -->
+    <record id="view_transport_good_delivery_wizard_form" model="ir.ui.view">
+        <field name="name">transport.good.delivery.wizard.form</field>
+        <field name="model">transport.good.delivery.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Assign Delivery" version="7.0">
+                <sheet>
+                    <group col="2">
+                        <!-- First Column -->
+                        <group>
+                            <field name="hub_inventory_id" readonly="1" />
+                            <field name="hub_id" readonly="1" />
+                            <field name="movement_leg_id" readonly="1"
+                                options="{'no_open': True, 'no_create': True, 'no_quick_create': True}" />
+
+                        </group>
+
+                        <!-- Second Column -->
+                        <group>
+                            <field name="delivery_date" string="Delivery Date" />
+                            <field name="vehicle_id" string="Vehicle" required="1" />
+                            <field name="driver_id" string="Driver" required="1" />
+                            <field name="expected_quantity" string="Expected(Qty)" required="1" />
+                        </group>
+
+                    </group>
+                </sheet>
+                <footer>
+                    <button string="Assign Delivery"
+                        type="object"
+                        name="action_assign_delivery"
+                        class="btn-primary" />
+                    <button string="Cancel"
+                        class="btn-secondary"
+                        special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+    <!-- Action Window to Open Wizard  -->
+    <record id="action_transport_good_delivery_wizard"
+        model="ir.actions.act_window">
+        <field name="name">Assign Delivery</field>
+        <field name="res_model">transport.good.delivery.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="view_id" ref="view_transport_good_delivery_wizard_form" />
+        <field name="context">{'default_hub_inventory_id': active_id}</field>
+    </record>
+</odoo>

@@ -1,0 +1,32 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_transport_dashboard,Transport Dashboard,model_transport_dashboard,base.group_user,1,1,1,1
+access_transport_booking,Transport Booking,model_transport_booking,base.group_user,1,1,1,1
+access_transport_party,Transport Party,model_transport_party,base.group_user,1,1,1,1
+access_transport_goods_line,Transport Goods Line,model_transport_goods_line,base.group_user,1,1,1,1
+access_transport_good_type,Transport Good Type,model_transport_goods_type,base.group_user,1,1,1,1
+access_transport_location,Transport Location,model_transport_location,base.group_user,1,1,1,1
+access_transport_movement,Transport Movement,model_transport_movement,base.group_user,1,1,1,1
+access_transport_movement_leg,Transport Movement Leg,model_transport_movement_leg,base.group_user,1,1,1,1
+access_transport_city,Transport City,model_transport_city,base.group_user,1,1,1,1
+access_transport_forwarding_manifold,Transport Manifold,model_transport_forwarding_manifold,base.group_user,1,1,1,1
+access_transport_forwarding_manifold_line,Transport Manifold Line,model_transport_forwarding_manifold_line,base.group_user,1,1,1,1
+access_transport_b2b_rate,Transport B2B Rate,model_transport_b2b_rate,base.group_user,1,1,1,1
+access_transport_inbound_manifest,Transport Inbound Manifest,model_transport_inbound_manifest,base.group_user,1,1,1,1
+access_transport_inbound_manifest_line,Transport Inbound Manifest Line,model_transport_inbound_manifest_line,base.group_user,1,1,1,1
+access_transport_hub_inventory,Transport Hub Inventory,model_transport_hub_inventory,base.group_user,1,1,1,1
+access_transport_hub_inventory_line,Transport Hub Inventory Line,model_transport_hub_inventory_line,base.group_user,1,1,1,1
+access_transport_account_move,Transport Account Move,model_account_move,base.group_user,1,1,1,1
+access_transport_route_plan,Transport Movement Plan,model_transport_route_plan,base.group_user,1,1,1,1
+access_transport_route_plan_line,Transport Movement Plan Line,model_transport_route_plan_line,base.group_user,1,1,1,1
+access_transport_manifest,Transport Manifest,model_transport_manifest,base.group_user,1,1,1,1
+access_transport_assign_manifest_wizard,Transport Manifest Assign Widget,model_transport_assign_manifest_wizard,base.group_user,1,1,1,1
+access_transport_assign_manifest_line_wizard,Transport Manifest Assign Line Widget,model_transport_assign_manifest_line_wizard,base.group_user,1,1,1,1
+access_transport_assign_manifest_good_line,Transport Manifest Good Line,model_transport_manifest_good_line,base.group_user,1,1,1,1
+access_transport_create_manifest_wizard,Transport Manifest Create Wizard,model_transport_create_manifest_wizard,base.group_user,1,1,1,1
+access_transport_create_manifest_good_wizard,Transport Manifest Create Good Wizard,model_transport_create_manifest_good_wizard,base.group_user,1,1,1,1
+access_transport_hub_receive_wizard,Transport Hub Receive Wizard,model_transport_hub_receive_wizard,base.group_user,1,1,1,1
+access_transport_hub_receive_line_wizard,Transport Hub Receive Line Wizard,model_transport_hub_receive_line_wizard,base.group_user,1,1,1,1
+access_transport_good_delivery_wizard,Transport Good Develivery Wizard,model_transport_good_delivery_wizard,base.group_user,1,1,1,1
+access_transport_good_delivery,Transport Good Delivery,model_transport_good_delivery,base.group_user,1,1,1,1
+access_transport_good_delivery_line,Transport Good Delivery Line,model_transport_good_delivery_line,base.group_user,1,1,1,1
+access_transport_good_delivery_pod,Transport Good Delivery POD,model_transport_good_delivery_pod,base.group_user,1,1,1,1

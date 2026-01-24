@@ -1,0 +1,56 @@
+services:
+  db:
+    image: postgres:16
+    user: root
+    environment:
+      - POSTGRES_USER=odoo
+      - POSTGRES_PASSWORD=odoo17@2023
+      - POSTGRES_DB=postgres
+    ports:
+    - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U odoo"]
+      interval: 10s
+      timeout: 5s
+      retries: 5  
+    restart: always             # run as a service
+    volumes:
+        - ./postgresql:/var/lib/postgresql/data
+
+  odoo17:
+    image: odoo:17
+    user: root
+    depends_on:
+      db: 
+        condition: service_healthy
+      
+    ports:
+      - "10017:8069"
+      - "20017:8072" # live chat
+    tty: true
+    command: 
+      - odoo
+      - --dev=reload,xml
+      
+    environment:
+      - HOST=db
+      - USER=odoo
+      - PASSWORD=odoo17@2023
+    volumes:
+      #- /etc/timezone:/etc/timezone:ro
+      #- /etc/localtime:/etc/localtime:ro
+      - ./entrypoint.sh:/entrypoint.sh
+      - ./addons:/mnt/extra-addons
+      - ./etc:/etc/odoo
+    restart: always             # run as a service
+
+  nginx:
+    image: nginx:alpine
+    depends_on:
+      - odoo17
+    ports:
+      - "80:80"
+      # - "443:443"   # later for SSL
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    restart: always  

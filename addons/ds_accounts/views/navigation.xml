@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ===================== -->
+    <!-- MAIN Accounts MENU -->
+    <!-- ===================== -->
+    <menuitem id="menu_accounts_root" name="Accounts 1.0" sequence="10" />
+
+    <menuitem
+        id="menu_accounts_dashboard"
+        name="Dashboard"
+        parent="menu_accounts_root"
+        action="action_dummy"
+        sequence="1" />
+
+    <!-- ===================== -->
+    <!-- OPERATION MENU -->
+    <!-- ===================== -->
+    <menuitem id="menu_accounts_operation" name="Operation"
+        parent="menu_accounts_root"
+        sequence="20" />
+    <menuitem id="menu_accounts_voucher" name="Vouchers"
+        parent="menu_accounts_operation"
+        action="action_dummy" sequence="2" />
+    <menuitem id="menu_accounts_payment" name="Payments"
+        parent="menu_accounts_operation"
+        action="action_dummy" sequence="3" />
+    <menuitem id="menu_accounts_receipt" name="Receipts"
+        parent="menu_accounts_operation"
+        action="action_dummy" sequence="4" />
+    <menuitem id="menu_accounts_contra" name="Contra"
+        parent="menu_accounts_operation"
+        action="action_dummy" sequence="5" />
+
+    <menuitem id="menu_accounts_debit_note"
+        name="Debit Note"
+        parent="menu_accounts_operation"
+        action="action_dummy" sequence="6" />
+
+    <menuitem id="menu_accounts_credit_note"
+        name="Credit Note"
+        parent="menu_accounts_operation"
+        action="action_dummy" sequence="7" />
+
+    <!-- ===================== -->
+    <!-- OPERATION MENU -->
+    <!-- ===================== -->
+
+    <menuitem id="menu_accounts_reports" name="Reports"
+        parent="menu_accounts_root"
+        sequence="50" />
+    <menuitem id="menu_accounts_trial_balance" name="Trial Balance"
+        parent="menu_accounts_reports"
+        action="action_dummy" sequence="2" />
+    <menuitem id="menu_accounts_pl_statement"
+        name="Profit &amp; Loss Statement"
+        parent="menu_accounts_reports"
+        action="action_dummy" sequence="3" />
+    <menuitem id="menu_accounts_balance_sheet"
+        name="Balance Sheet"
+        parent="menu_accounts_reports"
+        action="action_dummy" sequence="4" />
+    <menuitem id="menu_accounts_cash_flow"
+        name="Cash Flow Statement"
+        parent="menu_accounts_reports"
+        action="action_dummy" sequence="5" />
+    <menuitem id="menu_accounts_ledger" name="Ledger"
+        parent="menu_accounts_reports"
+        action="action_dummy" sequence="6" />
+    <menuitem id="menu_accounts_bank_book" name="Bank Book"
+        parent="menu_accounts_reports"
+        action="action_dummy" sequence="7" />
+    <menuitem id="menu_accounts_sundry_debtors"
+        name="Sundry Debtors"
+        parent="menu_accounts_reports"
+        action="action_dummy" sequence="8" />
+    <menuitem id="menu_accounts_sundry_creditors"
+        name="Sundry Creditors"
+        parent="menu_accounts_reports"
+        action="action_dummy" sequence="9" />
+    <menuitem id="menu_accounts_day_book" name="Day Book"
+        parent="menu_accounts_reports"
+        action="action_dummy" sequence="10" /> debit_note <menuitem
+        id="menu_accounts_creditors_ageing" name="Creditors Ageing"
+        parent="menu_accounts_reports"
+        action="action_dummy" sequence="11" />
+    <menuitem id="menu_accounts_debtors_ageing"
+        name="Debtors Ageing"
+        parent="menu_accounts_reports"
+        action="action_dummy" sequence="12" />
+
+
+    <!-- ===================== -->
+    <!-- MASTER MENU -->
+    <!-- ===================== -->
+    <menuitem id="menu_accounts_master" name="Master"
+        parent="menu_accounts_root"
+        sequence="70" />
+    <menuitem id="menu_accounts_coa" name="Books of Accounts"
+        parent="menu_accounts_master"
+        action="action_ds_account_account" sequence="2" />
+    <menuitem id="menu_accounts_journal"
+        name="Journals"
+        parent="menu_accounts_master"
+        action="action_ds_account_journal" sequence="3" />
+    <menuitem id="menu_accounts_party_ledger"
+        name="Party Ledger"
+        parent="menu_accounts_master"
+        action="action_ds_customer_ledger" sequence="4" />
+</odoo>

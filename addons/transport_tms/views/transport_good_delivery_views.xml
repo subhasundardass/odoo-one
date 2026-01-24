@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ========================= -->
+    <!-- Tree View (Ledger)        -->
+    <!-- ========================= -->
+    <record id="view_transport_good_delivery_tree" model="ir.ui.view">
+        <field name="name">transport.good.delivery.tree</field>
+        <field name="model">transport.good.delivery</field>
+        <field name="arch" type="xml">
+            <tree string="Good Delivery" create="0" edit="0">
+                <field name="name" string="ID#" />
+                <field name="hub_id" />
+                <!-- <field name="hub_inventory_id" /> -->
+                <field name="vehicle_id" />
+                <field name="driver_id" />
+                <field name="delivery_date" />
+                <field name="state"
+                    widget="badge"
+                    decoration-muted="state == 'assigned'"
+                    decoration-warning="state == 'out_for_delivery'"
+                    decoration-info="state == 'partial'"
+                    decoration-success="state == 'done'"
+                    decoration-danger="state == 'cancelled'" />
+            </tree>
+        </field>
+    </record>
+
+    <!-- ========================= -->
+    <!-- Form View (Read-only)     -->
+    <!-- ========================= -->
+    <record id="view_transport_good_delivery_form" model="ir.ui.view">
+        <field name="name">transport.good.delivery.form</field>
+        <field name="model">transport.good.delivery</field>
+        <field name="arch" type="xml">
+            <form string="Good Delivery">
+                <!-- HEADER -->
+                <header>
+                    <field name="state"
+                        widget="statusbar"
+                        statusbar_visible="assigned,confirmed,out_for_delivery,partial,done,failed" />
+
+                    <!-- ACTION BUTTONS -->
+                    <button name="action_confirm"
+                        type="object"
+                        string="Confirm"
+                        class="btn-primary"
+                        invisible="state != 'assigned'" />
+
+                    <button name="action_start_delivery"
+                        type="object"
+                        string="Out for Delivery"
+                        class="btn-info"
+                        invisible="state != 'confirmed'" />
+
+                    <button name="action_mark_deliverd"
+                        type="object"
+                        string="Mark Delivered"
+                        class="btn-success"
+                        invisible="state not in ('out_for_delivery','partial')" />
+
+                    <button name="action_fail"
+                        type="object"
+                        string="Return / Fail"
+                        class="btn-warning"
+                        invisible="state not in ('out_for_delivery','partial')" />
+
+                    <button name="action_cancel"
+                        type="object"
+                        string="Cancel"
+                        class="btn-danger"
+                        invisible="state in ('done','failed','cancelled')" />
+                </header>
+
+                <!-- BODY -->
+                <sheet>
+                    <div class="oe_title">
+                        <h2>Good Delivery </h2>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="name" readonly="1" />
+                            <field name="delivery_date" readonly="1" />
+                            <field name="hub_id" readonly="1" />
+                            <field name="movement_leg_id" readonly="1" />
+                        </group>
+                        <group>
+                            <field name="hub_inventory_id" readonly="1" />
+                            <field name="vehicle_id" readonly="1" />
+                            <field name="driver_id" readonly="1" />
+                        </group>
+                    </group>
+
+                    <!-- DELIVERY LINES -->
+                    <notebook>
+                        <page string="Delivery Line">
+                            <field name="delivery_line_ids">
+
+                                <tree editable="bottom" create="0" delete="0">
+                                    <field name="delivery_id" readonly="1" />
+                                    <field name="expected_qty" readonly="1" />
+                                    <field name="delivered_qty" />
+                                    <field name="short_qty" readonly="1" />
+                                    <field name="rejected_qty" />
+                                    <field name="state" readonly="1" />
+                                </tree>
+                            </field>
+                        </page>
+
+                        <page string="Proof of Delivery">
+                            <field name="pod_ids">
+                                <tree string="POD">
+                                    <field name="pod_type" />
+                                    <field name="signed_by" />
+                                    <field name="attachment_ids" />
+                                    <field name="otp_varified" />
+                                    <field name="delivered_at" />
+                                </tree>
+                                <form string="Proof of Delivery">
+                                    <sheet>
+
+                                        <group>
+                                            <group string="Basic Info" col="2">
+                                                <field name="pod_type" />
+                                                <field name="delivered_at" />
+                                            </group>
+
+                                            <group string="Details">
+
+                                                <!-- Signature POD -->
+                                                <field name="signed_by"
+                                                    invisible="pod_type != 'signature'"
+                                                    required="pod_type == 'signature'"
+                                                />
+
+                                                <!-- OTP POD -->
+                                                <field name="otp" required="1"
+                                                    invisible="pod_type != 'otp'" />
+                                                <field name="otp_varified" required="1"
+                                                    invisible="pod_type != 'otp'" />
+
+                                                <!-- Photo POD -->
+                                                <field name="attachment_ids"
+                                                    widget="many2many_binary"
+                                                    filename="delivery_id.name"
+                                                    options="{'accept': 'image/*'}"
+                                                    invisible="pod_type != 'photo'"
+                                                    required="pod_type == 'photo'"
+                                                />
+
+                                            </group>
+
+                                            <group col="2" string="Location">
+                                                <field name="latitude" />
+                                                <field name="longitude" />
+                                            </group>
+
+                                        </group>
+
+                                    </sheet>
+                                </form>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" groups="base.group_user" />
+                    <field name="message_ids" widget="mail_thread" />
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- ========================= -->
+    <!-- Action                    -->
+    <!-- ========================= -->
+    <record id="action_transport_good_delivery" model="ir.actions.act_window">
+        <field name="name">Good Delivery</field>
+        <field name="res_model">transport.good.delivery</field>
+        <field name="view_mode">tree,form</field>
+        <!-- IMPORTANT -->
+        <field name="context">{'create': False}</field>
+    </record>
+</odoo>

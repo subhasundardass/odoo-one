@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- ================= Journal Tree View ================= -->
+    <record id="view_ds_account_journal_tree" model="ir.ui.view">
+        <field name="name">ds.accounts.journal.tree</field>
+        <field name="model">ds.accounts.journal</field>
+        <field name="arch" type="xml">
+            <tree string="Journals">
+                <field name="name" />
+                <field name="code" />
+                <field name="journal_type" />
+                <field name="default_debit_account_id" />
+                <field name="default_credit_account_id" />
+                <field name="active" />
+            </tree>
+        </field>
+    </record>
+
+    <!-- ================= Journal Form View ================= -->
+    <record id="view_ds_account_journal_form" model="ir.ui.view">
+        <field name="name">ds.account.journal.form</field>
+        <field name="model">ds.accounts.journal</field>
+        <field name="arch" type="xml">
+            <form string="Journal">
+                <sheet>
+                    <group>
+                        <field name="name" />
+                        <field name="code" />
+                        <field name="journal_type" />
+                        <field name="default_debit_account_id" />
+                        <field name="default_credit_account_id" />
+                        <field name="active" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- =================Actions ================= -->
+    <!-- <menuitem id="menu_ds_journals_root" name="Journals"
+        parent="menu_ds_accounts_root" /> -->
+
+    <record id="action_ds_account_journal" model="ir.actions.act_window">
+        <field name="name">Journals</field>
+        <field name="res_model">ds.accounts.journal</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click 'Create' to add a new journal.
+            </p>
+        </field>
+    </record>
+
+    <!-- <menuitem id="menu_ds_journals"
+        name="Manage Journals"
+        parent="menu_ds_journals_root"
+        action="action_ds_account_journal" /> -->
+</odoo>

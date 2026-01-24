@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="ds_journal_cash" model="ds.accounts.journal">
+        <field name="name">Cash</field>
+        <field name="code">CASH</field>
+        <field name="journal_type">cash</field>
+    </record>
+
+    <record id="ds_journal_bank" model="ds.accounts.journal">
+        <field name="name">Bank</field>
+        <field name="code">BANK</field>
+        <field name="journal_type">bank</field>
+    </record>
+
+    <record id="ds_journal_sale" model="ds.accounts.journal">
+        <field name="name">Sales</field>
+        <field name="code">SALE</field>
+        <field name="journal_type">sale</field>
+    </record>
+
+    <record id="ds_journal_purchase" model="ds.accounts.journal">
+        <field name="name">Purchase</field>
+        <field name="code">PUR</field>
+        <field name="journal_type">purchase</field>
+    </record>
+
+    <record id="ds_journal_general" model="ds.accounts.journal">
+        <field name="name">General</field>
+        <field name="code">GEN</field>
+        <field name="journal_type">general</field>
+    </record>
+</odoo>

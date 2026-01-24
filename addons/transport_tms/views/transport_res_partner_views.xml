@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="view_res_partner_form_transport_roles" model="ir.ui.view">
+        <field name="name">res.partner.form.transport.roles</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form" />
+        <field name="arch" type="xml">
+
+            <!-- ===============================
+                 PARTNER ROLE FLAGS
+                 =============================== -->
+            <xpath expr="//sheet/group" position="before">
+                <group>
+                    <group>
+                        <field name="partner_type" />
+                    </group>
+                </group>
+            </xpath>
+
+            <!-- ===============================
+                 DRIVER DETAILS
+                 =============================== -->
+            <xpath expr="//notebook" position="inside">
+                <page string="Driver Details"
+                    modifiers="{'invisible': [['partner_type', '=', 'driver']]}">
+                    <group>
+                        <group>
+                            <field name="driver_license_no" />
+                            <field name="driver_license_expiry" />
+                        </group>
+                        <group>
+                            <field name="driver_aadhar_no" />
+                            <field name="driver_pan_no" />
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+
+            <!-- ===============================
+                 TRANSPORTER DETAILS
+                 =============================== -->
+            <xpath expr="//notebook" position="inside">
+                <page string="Transporter Details"
+                    modifiers="{'invisible': [['is_transporter', '=', false]]}">
+                    <group>
+                        <field name="transport_company_name" />
+                        <field name="vehicle_count" />
+                    </group>
+                </page>
+            </xpath>
+
+        </field>
+    </record>
+
+</odoo>

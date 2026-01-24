@@ -1,0 +1,22 @@
+/* Fix Odoo 17 input bottom border */
+.o_form_view .o_input,
+.o_form_view input,
+.o_form_view textarea,
+.o_form_view select {
+    border-bottom-width: 1px !important; /* always show bottom border */
+    border-bottom-style: solid !important;
+    border-bottom-color: #dfe3e8 !important; /* Odoo default light gray */
+    color: black;
+}
+
+/* Optional: keep hover/focus color change */
+.o_form_view .o_input:focus,
+.o_form_view input:focus,
+.o_form_view textarea:focus,
+.o_form_view select:focus {
+    border-bottom-color: #3399ff !important; /* subtle highlight on focus */
+}
+
+.o_notebook .nav-link.active, .o_notebook .nav-link.active:hover, .o_notebook .nav-link.active:focus, .o_notebook .nav-link.active:active {
+    font-weight: 600;
+}

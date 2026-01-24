@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- ================= ASSETS ================= -->
+    <record id="ds_accounts_account_cash" model="ds.accounts.account">
+        <field name="name">Cash</field>
+        <field name="code">101</field>
+        <field name="account_type">asset</field>
+        <field name="active" eval="True" />
+    </record>
+
+    <record id="ds_accounts_account_bank" model="ds.accounts.account">
+        <field name="name">Bank</field>
+        <field name="code">102</field>
+        <field name="account_type">asset</field>
+        <field name="active" eval="True" />
+    </record>
+
+    <record id="ds_accounts_account_accounts_receivable" model="ds.accounts.account">
+        <field name="name">Accounts Receivable</field>
+        <field name="code">103</field>
+        <field name="account_type">asset</field>
+        <field name="active" eval="True" />
+    </record>
+
+    <record id="ds_accounts_account_inventory" model="ds.accounts.account">
+        <field name="name">Inventory</field>
+        <field name="code">104</field>
+        <field name="account_type">asset</field>
+        <field name="active" eval="True" />
+    </record>
+
+    <record id="ds_accounts_account_fixed_assets" model="ds.accounts.account">
+        <field name="name">Fixed Assets</field>
+        <field name="code">105</field>
+        <field name="account_type">asset</field>
+        <field name="active" eval="True" />
+    </record>
+
+    <record id="ds_accounts_account_advance_receivable" model="ds.accounts.account">
+        <field name="name">Advance to Suppliers</field>
+        <field name="code">106</field>
+        <field name="account_type">asset</field>
+        <field name="active" eval="True" />
+    </record>
+
+    <!-- ================= LIABILITIES ================= -->
+    <record id="ds_accounts_account_accounts_payable" model="ds.accounts.account">
+        <field name="name">Accounts Payable</field>
+        <field name="code">201</field>
+        <field name="account_type">liability</field>
+        <field name="active" eval="True" />
+    </record>
+
+    <record id="ds_accounts_account_loans" model="ds.accounts.account">
+        <field name="name">Loans</field>
+        <field name="code">202</field>
+        <field name="account_type">liability</field>
+        <field name="active" eval="True" />
+    </record>
+
+    <record id="ds_accounts_account_taxes_payable" model="ds.accounts.account">
+        <field name="name">Taxes Payable</field>
+        <field name="code">203</field>
+        <field name="account_type">liability</field>
+        <field name="active" eval="True" />
+    </record>
+
+    <record id="ds_accounts_account_statutory_liabilities" model="ds.accounts.account">
+        <field name="name">Statutory Liabilities</field>
+        <field name="code">204</field>
+        <field name="account_type">liability</field>
+        <field name="active" eval="True" />
+    </record>
+
+    <!-- ================= EQUITY ================= -->
+    <record id="ds_accounts_account_capital" model="ds.accounts.account">
+        <field name="name">Capital</field>
+        <field name="code">301</field>
+        <field name="account_type">equity</field>
+        <field name="active" eval="True" />
+    </record>
+
+    <record id="ds_accounts_account_retained_earnings" model="ds.accounts.account">
+        <field name="name">Retained Earnings</field>
+        <field name="code">302</field>
+        <field name="account_type">equity</field>
+        <field name="active" eval="True" />
+    </record>
+
+    <record id="ds_accounts_account_drawings" model="ds.accounts.account">
+        <field name="name">Drawings</field>
+        <field name="code">303</field>
+        <field name="account_type">equity</field>
+        <field name="active" eval="True" />
+    </record>
+
+    <!-- ================= INCOME ================= -->
+    <record id="ds_accounts_account_sales" model="ds.accounts.account">
+        <field name="name">Sales Revenue</field>
+        <field name="code">401</field>
+        <field name="account_type">income</field>
+        <field name="active" eval="True" />
+    </record>
+
+    <record id="ds_accounts_account_other_income" model="ds.accounts.account">
+        <field name="name">Other Income</field>
+        <field name="code">402</field>
+        <field name="account_type">income</field>
+        <field name="active" eval="True" />
+    </record>
+
+    <record id="ds_accounts_account_interest_income" model="ds.accounts.account">
+        <field name="name">Interest Income</field>
+        <field name="code">403</field>
+        <field name="account_type">income</field>
+        <field name="active" eval="True" />
+    </record>
+
+    <!-- ================= EXPENSES ================= -->
+    <record id="ds_accounts_account_purchase" model="ds.accounts.account">
+        <field name="name">Purchases</field>
+        <field name="code">501</field>
+        <field name="account_type">expense</field>
+        <field name="active" eval="True" />
+    </record>
+
+    <record id="ds_accounts_account_salary" model="ds.accounts.account">
+        <field name="name">Salaries &amp; Wages</field>
+        <field name="code">502</field>
+        <field name="account_type">expense</field>
+        <field name="active" eval="True" />
+    </record>
+
+    <record id="ds_accounts_account_rent" model="ds.accounts.account">
+        <field name="name">Rent</field>
+        <field name="code">503</field>
+        <field name="account_type">expense</field>
+        <field name="active" eval="True" />
+    </record>
+
+    <record id="ds_accounts_account_fuel" model="ds.accounts.account">
+        <field name="name">Fuel Expenses</field>
+        <field name="code">504</field>
+        <field name="account_type">expense</field>
+        <field name="active" eval="True" />
+    </record>
+
+    <record id="ds_accounts_account_maintenance" model="ds.accounts.account">
+        <field name="name">Vehicle Maintenance</field>
+        <field name="code">505</field>
+        <field name="account_type">expense</field>
+        <field name="active" eval="True" />
+    </record>
+
+    <record id="ds_accounts_account_office_expense" model="ds.accounts.account">
+        <field name="name">Office Expenses</field>
+        <field name="code">506</field>
+        <field name="account_type">expense</field>
+        <field name="active" eval="True" />
+    </record>
+
+    <record id="ds_accounts_account_misc_expense" model="ds.accounts.account">
+        <field name="name">Miscellaneous Expenses</field>
+        <field name="code">507</field>
+        <field name="account_type">expense</field>
+        <field name="active" eval="True" />
+    </record>
+
+    <record id="ds_accounts_account_interest_expense" model="ds.accounts.account">
+        <field name="name">Interest Expense</field>
+        <field name="code">508</field>
+        <field name="account_type">expense</field>
+        <field name="active" eval="True" />
+    </record>
+
+</odoo>

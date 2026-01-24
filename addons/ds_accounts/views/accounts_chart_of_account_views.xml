@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- ================= Account Tree View ================= -->
+    <record id="view_ds_account_account_tree" model="ir.ui.view">
+        <field name="name">ds.accounts.account.tree</field>
+        <field name="model">ds.accounts.account</field>
+        <field name="arch" type="xml">
+            <tree string="Accounts">
+                <field name="code" />
+                <field name="name" />
+                <field name="account_type" />
+                <field name="active" />
+            </tree>
+        </field>
+    </record>
+
+    <!-- ================= Account Form View ================= -->
+    <record id="view_ds_account_account_form" model="ir.ui.view">
+        <field name="name">ds.account.account.form</field>
+        <field name="model">ds.accounts.account</field>
+        <field name="arch" type="xml">
+            <form string="Account">
+                <sheet>
+                    <group>
+                        <field name="code" />
+                        <field name="name" />
+                        <field name="account_type" />
+                        <field name="active" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- ================= Account Menu ================= -->
+    <!-- <menuitem id="menu_ds_accounts_root" name="Accounts" />
+
+    <menuitem id="menu_ds_accounts_master" name="Chart of Accounts"
+        parent="menu_ds_accounts_root" /> -->
+
+    <record id="action_ds_account_account" model="ir.actions.act_window">
+        <field name="name">Chart of Accounts</field>
+        <field name="res_model">ds.accounts.account</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click 'Create' to add a new account.
+            </p>
+        </field>
+    </record>
+
+    <!-- <menuitem id="menu_ds_accounts_accounts"
+        name="Accounts"
+        parent="menu_ds_accounts_master"
+        action="action_ds_account_account" /> -->
+</odoo>

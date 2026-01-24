@@ -1,0 +1,25 @@
+/* Save button */
+button.o_form_button_save::after {
+    content: " Save";
+    font-weight: 500;
+}
+
+/* Discard button */
+button.o_form_button_cancel::after {
+    content: " Discard";
+    font-weight: 500;
+}
+
+/* Edit button */
+button.o_form_button_edit::after {
+    content: " Edit";
+    font-weight: 500;
+}
+
+/* Make buttons look like Odoo 15 */
+button.o_form_button_save,
+button.o_form_button_cancel,
+button.o_form_button_edit {
+    padding-left: 10px;
+    padding-right: 14px;
+}

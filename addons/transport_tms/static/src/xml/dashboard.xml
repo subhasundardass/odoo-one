@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="transport_dashboard_template" owl="1">
+        <div class="o_transport_dashboard p-4">
+            <h2 class="mb-4">Transport Management Dashboard</h2>
+
+            <div class="row">
+                <t t-foreach="Object.entries(state.data || {})" t-as="item" t-key="item[0]">
+                    <div class="col-3 mb-3">
+                        <div class="card shadow-sm">
+                            <div class="card-body text-center">
+                                <small class="text-muted">
+                                    <t t-esc="item[0].replaceAll('_',' ').toUpperCase()"/>
+                                </small>
+                                <h2>
+                                    <t t-esc="item[1]"/>
+                                </h2>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </div>
+        </div>
+    </t>
+
+</templates>

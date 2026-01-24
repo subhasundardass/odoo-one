@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- Transport Booking (LR) -->
+        <record id="seq_transport_lr" model="ir.sequence">
+            <field name="name">Transport LR</field>
+            <field name="code">transport.booking</field>
+            <field name="implementation">standard</field>
+            <field name="prefix">LR/%(year)s/</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False" />
+        </record>
+
+        <!-- Transport Movement (MOV) -->
+        <record id="seq_transport_movement" model="ir.sequence">
+            <field name="name">Transport Movement</field>
+            <field name="code">transport.movement</field>
+            <field name="implementation">standard</field>
+            <field name="prefix">MOV/%(year)s/</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False" />
+        </record>
+
+        <!-- Transport Manifest (TMF) -->
+        <record id="seq_transport_manifest" model="ir.sequence">
+            <field name="name">Transport Manifest</field>
+            <field name="code">transport.manifest</field>
+            <field name="prefix">ITM/%(year)s/</field>
+            <field name="padding">5</field>
+        </record>
+
+        <!-- Forwareding Schedule cum Manifold (FSCM) -->
+        <record id="seq_forwarding_manifold" model="ir.sequence">
+            <field name="name">Forwarding Schedule cum Manifold</field>
+            <field name="code">transport.forwarding.manifold</field>
+            <field name="prefix">FSCM/%(year)s/</field>
+            <field name="padding">5</field>
+        </record>
+
+        <!-- Inbound Manifest -->
+        <record id="seq_inbound_manifest" model="ir.sequence">
+            <field name="name">Inbound Manifest</field>
+            <field name="code">transport.inbound.manifest</field>
+            <field name="prefix">INM/%(year)s/</field>
+            <field name="padding">5</field>
+        </record>
+
+        <!-- B2B Rate -->
+        <record id="seq_b2b_rate" model="ir.sequence">
+            <field name="name">B2B Transport Rate</field>
+            <field name="code">transport.b2b.rate</field>
+            <field name="prefix">B2B/%(year)s/</field>
+            <field name="padding">5</field>
+        </record>
+
+        <!-- Hub Inventory -->
+        <record id="seq_hub_inventory" model="ir.sequence">
+            <field name="name">Hub Movement</field>
+            <field name="code">transport.hub.inventory</field>
+            <field name="prefix">HINV/%(year)s/</field>
+            <field name="padding">5</field>
+        </record>
+
+        <!-- Good Delivery -->
+        <record id="seq_good_delivery" model="ir.sequence">
+            <field name="name">Good Delivery</field>
+            <field name="code">transport.good.delivery</field>
+            <field name="prefix">DEV/%(year)s/</field>
+            <field name="padding">5</field>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,10 @@
+
+body{
+    color:black !important
+}
+.o_form_view .o_form_uri > span:first-child {
+    color: black !important;
+}
+.table > tbody {
+    color: black !important;
+}
