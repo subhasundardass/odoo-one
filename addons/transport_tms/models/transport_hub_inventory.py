@@ -1,5 +1,6 @@
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError, UserError
+import pdb
 import logging
 
 _logger = logging.getLogger(__name__)
@@ -159,7 +160,6 @@ class TransportHubInventory(models.Model):
         store=False,
         readonly=True,
     )
-    # Good details from manifest_good_line_id or good_line_id
 
     good_type_id = fields.Many2one(
         related="manifest_good_line_id.goods_type_id",  # adjust based on your model
@@ -248,6 +248,7 @@ class TransportHubInventory(models.Model):
             )
 
     def action_receive_confirm(self):
+
         for rec in self:
             if rec.state != "valid":
                 raise UserError("Only Valid inventory can be confirmed.")
@@ -258,8 +259,6 @@ class TransportHubInventory(models.Model):
             leg = rec.current_leg_id
             qty = rec.qty_received
             good_line_id = rec.manifest_good_line_id.good_line_id.id
-            # product = rec.manifest_good_line_id.good_line_id.product_id
-            uom = rec.manifest_good_line_id.good_line_id.unit_id
             inventory_line_model = self.env["transport.hub.inventory.line"]
 
             from_loc = leg.from_location_id

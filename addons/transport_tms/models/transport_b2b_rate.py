@@ -64,7 +64,7 @@ class TransportB2BRate(models.Model):
     def get_applicable_b2b_rate(
         self,
         *,
-        transporter_id=None,
+        party_id=None,
         uom_id,
         rate_date=None,
     ):
@@ -86,9 +86,9 @@ class TransportB2BRate(models.Model):
         ]
 
         # 1️⃣ Transporter-specific rate
-        if transporter_id:
+        if party_id:
             customer_rate = self.search(
-                domain_date + [("transporter_id", "=", transporter_id)],
+                domain_date + [("transporter_id", "=", party_id)],
                 order="valid_from desc",
                 limit=1,
             )

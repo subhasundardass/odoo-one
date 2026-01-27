@@ -19,6 +19,11 @@
     <menuitem id="menu_accounts_operation" name="Operation"
         parent="menu_accounts_root"
         sequence="20" />
+    
+    <menuitem id="menu_accounts_invoice" name="Invoices"
+        parent="menu_accounts_operation"
+        action="action_dummy" sequence="1" />
+
     <menuitem id="menu_accounts_voucher" name="Vouchers"
         parent="menu_accounts_operation"
         action="action_dummy" sequence="2" />
@@ -43,51 +48,60 @@
         action="action_dummy" sequence="7" />
 
     <!-- ===================== -->
-    <!-- OPERATION MENU -->
+    <!-- REPORTS MENU -->
     <!-- ===================== -->
 
     <menuitem id="menu_accounts_reports" name="Reports"
         parent="menu_accounts_root"
         sequence="50" />
-    <menuitem id="menu_accounts_trial_balance" name="Trial Balance"
+
+    <menuitem id="menu_accounts_report_journal" name="Journal"
         parent="menu_accounts_reports"
-        action="action_dummy" sequence="2" />
-    <menuitem id="menu_accounts_pl_statement"
+        action="action_dummy" sequence="10" />
+
+    <menuitem id="menu_accounts_report_trial_balance"
+        name="Trial Balance"
+        parent="menu_accounts_reports"
+        action="action_dummy" sequence="20" />
+    <menuitem id="menu_accounts_report_pl_statement"
         name="Profit &amp; Loss Statement"
         parent="menu_accounts_reports"
-        action="action_dummy" sequence="3" />
-    <menuitem id="menu_accounts_balance_sheet"
+        action="action_dummy" sequence="30" />
+    <menuitem id="menu_accounts_report_balance_sheet"
         name="Balance Sheet"
         parent="menu_accounts_reports"
-        action="action_dummy" sequence="4" />
-    <menuitem id="menu_accounts_cash_flow"
+        action="action_dummy" sequence="40" />
+    <menuitem id="menu_accounts_report_cash_flow"
         name="Cash Flow Statement"
         parent="menu_accounts_reports"
-        action="action_dummy" sequence="5" />
-    <menuitem id="menu_accounts_ledger" name="Ledger"
+        action="action_dummy" sequence="50" />
+    <menuitem id="menu_accounts_report_ledger"
+        name="Ledger"
         parent="menu_accounts_reports"
-        action="action_dummy" sequence="6" />
-    <menuitem id="menu_accounts_bank_book" name="Bank Book"
+        action="action_dummy" sequence="60" />
+    <menuitem id="menu_accounts_report_bank_book"
+        name="Bank Book"
         parent="menu_accounts_reports"
-        action="action_dummy" sequence="7" />
-    <menuitem id="menu_accounts_sundry_debtors"
+        action="action_dummy" sequence="70" />
+    <menuitem id="menu_accounts_report_sundry_debtors"
         name="Sundry Debtors"
         parent="menu_accounts_reports"
-        action="action_dummy" sequence="8" />
-    <menuitem id="menu_accounts_sundry_creditors"
+        action="action_dummy" sequence="800" />
+    <menuitem id="menu_accounts_report_sundry_creditors"
         name="Sundry Creditors"
         parent="menu_accounts_reports"
-        action="action_dummy" sequence="9" />
-    <menuitem id="menu_accounts_day_book" name="Day Book"
+        action="action_dummy" sequence="90" />
+    <menuitem id="menu_accounts_report_day_book"
+        name="Day Book"
         parent="menu_accounts_reports"
-        action="action_dummy" sequence="10" /> debit_note <menuitem
+        action="action_dummy" sequence="100" /> debit_note <menuitem
         id="menu_accounts_creditors_ageing" name="Creditors Ageing"
         parent="menu_accounts_reports"
-        action="action_dummy" sequence="11" />
-    <menuitem id="menu_accounts_debtors_ageing"
+        action="action_dummy" sequence="110" />
+    <menuitem id="menu_accounts_report_debtors_ageing"
         name="Debtors Ageing"
         parent="menu_accounts_reports"
-        action="action_dummy" sequence="12" />
+        action="action_dummy" sequence="120" />
 
 
     <!-- ===================== -->

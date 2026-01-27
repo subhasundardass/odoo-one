@@ -10,9 +10,10 @@ class DsAccountMove(models.Model):
     @api.model
     def create(self, vals):
         # Assign a sequence-like name if needed
-        vals["name"] = vals.get(
-            "name", "JE/%s" % self.env["ds.accounts.move"].search_count([]) + 1
-        )
+        if vals.get("name", "New") == "New":
+            vals["name"] = (
+                self.env["ir.sequence"].next_by_code("accounts.journal.entry") or "New"
+            )
         return super().create(vals)
 
     # @api.model
@@ -265,7 +266,8 @@ class DsAccountMove(models.Model):
                         "quantity": line.get("quantity", 1.0),
                         "price_unit": line.get("price_unit", 0.0),
                         "tax_ids": [Command.set(line.get("tax_ids", []))],
-                        "analytic_account_id": line.get("analytic_account_id"),
+                        # "analytic_account_id": line.get("account_id"),
+                        "account_id": line.get("account_id"),
                     }
                 )
             )

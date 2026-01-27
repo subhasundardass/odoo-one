@@ -12,7 +12,6 @@ from . import transport_route_plan_line
 
 # --(3) Booking
 from . import transport_booking
-from . import account_move
 from . import fleet_vehicle
 
 # --(4) Movement

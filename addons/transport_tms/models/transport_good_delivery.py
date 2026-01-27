@@ -1,5 +1,6 @@
 from odoo import models, fields, api, Command
-from odoo.exceptions import ValidationError
+from odoo.exceptions import ValidationError, UserError
+import pdb
 import logging
 
 _logger = logging.getLogger(__name__)
@@ -83,6 +84,13 @@ class TransportGoodDelivery(models.Model):
         string="Delivery Goods Lines",
     )
 
+    invoice_id = fields.Many2one(
+        "account.move",
+        string="Invoice",
+        readonly=True,
+        copy=False,
+        domain="[('move_type', '=', 'out_invoice')]",
+    )
     # ------------------------
     # POD relation
     # ------------------------
@@ -136,6 +144,7 @@ class TransportGoodDelivery(models.Model):
             rec.state = "out_for_delivery"
 
     def action_mark_deliverd(self):
+
         for rec in self:
             if not rec.delivery_line_ids:
                 raise ValidationError("No delivery goods found.")
@@ -166,19 +175,21 @@ class TransportGoodDelivery(models.Model):
                     line.state = "delivered"
                     # self._update_inventory_status(strState="delivered")
 
-                # Create outward inventory
-                self._create_inventory_line_outward(
-                    good_line_id=line.good_line_id, qty_received=line.delivered_qty
-                )
-                # Update Delived Status
-                self._update_inventory_status(delivered_qty=line.delivered_qty)
+                ## Create outward inventory
+                # self._create_inventory_line_outward(
+                #     good_line_id=line.good_line_id, qty_received=line.delivered_qty
+                # )
+                ## Update Delived Status
+                # self._update_inventory_status(delivered_qty=line.delivered_qty)
 
-            # ---- HEADER STATE UPDATE ----
-            rec.state = "done" if all_done else "partial"
+            ## ---- HEADER STATE UPDATE ----
+            # rec.state = "done" if all_done else "partial"
 
             # 3 -- lock Booking
             # 3 -- lock Stock Movement
             # 5 -- create Invoice
+            invoice = self._create_invoice()
+            # self.invoice_id = invoice.id
 
     def action_fail(self):
         for rec in self:
@@ -200,7 +211,7 @@ class TransportGoodDelivery(models.Model):
 
         # location_src_id = self.hub_inventory_id.source_location_id.id
         # location_dest_id = self.hub_inventory_id.destination_location_id.id
-        uom = good_line.unit_id or product.uom_id
+        # uom = good_line.unit_id or product.uom_id
 
         # picking = Picking.create(
         #     {
@@ -234,7 +245,6 @@ class TransportGoodDelivery(models.Model):
                 "good_line_id": good_line_id.id,
                 "movement_quantity": qty_received,
                 "description": f"Delivered Goods by {self.name}",
-                "unit_id": uom.id,
             }
         )
 
@@ -288,43 +298,68 @@ class TransportGoodDelivery(models.Model):
 
     # Generate customer invoice based on delivered quantities.
     def _create_invoice(self):
-
         AccountMove = self.env["account.move"]
 
         for rec in self:
             if rec.invoice_id:
-                return
+                continue
 
-            AccountMove = self.env["account.move"].create(
-                {
-                    "move_type": "out_invoice",
-                    "partner_id": rec.partner_id.id,
-                    "invoice_origin": rec.name,
-                    # "invoice_line_ids": [
-                    #     (
-                    #         0,
-                    #         0,
-                    #         {
-                    #             "product_id": line.product_id.id,
-                    #             "quantity": line.delivered_qty,
-                    #             "price_unit": line.price_unit,
-                    #         },
-                    #     )
-                    #     for line in rec.delivery_line_ids
-                    # ],
-                    "invoice_line_ids": Command.create(
-                        [
-                            {
-                                "product_id": line.product_id.id,
-                                "quantity": line.delivered_qty,
-                                "price_unit": line.price_unit,
-                            }
-                        ]
-                    ),
-                }
+            partner = rec.hub_inventory_id.manifest_id.movement_id.booking_id.partner_id
+            if not partner:
+                raise UserError("Customer not found for delivery")
+
+            # Get B2B rate
+            rate_data = self.env["transport.b2b.rate"].get_applicable_b2b_rate(
+                party_id=None,
+                uom_id=self.env.ref("uom.product_uom_kgm").id,
+            )
+            rate = rate_data.get("rate", 0.0)
+            if rate <= 0:
+                raise UserError("Invalid B2B rate")
+
+            invoice_lines = []
+
+            for line in rec.delivery_line_ids.filtered(lambda l: l.delivered_qty > 0):
+                product = line.good_line_id.product_id
+
+                # Income account from Chart of Accounts (standard Odoo way)
+                account = (
+                    product.property_account_income_id
+                    or product.categ_id.property_account_income_categ_id
+                )
+
+                if not account:
+                    raise UserError(
+                        f"No income account defined for product {product.display_name}"
+                    )
+
+                charged_weight = line.good_line_id.charged_weight
+                if charged_weight <= 0:
+                    raise UserError("Charged weight must be greater than zero")
+
+                invoice_lines.append(
+                    {
+                        "product_id": product.id,
+                        "name": product.display_name,
+                        "quantity": charged_weight,  # ✅ weight-based quantity
+                        "price_unit": rate,
+                        "account_id": account.id,
+                    }
+                )
+
+            if not invoice_lines:
+                raise UserError("No invoiceable lines found")
+
+            invoice = AccountMove.create_invoice(
+                partner_id=partner.id,
+                move_type="out_invoice",
+                ref=f"Delivery {rec.name}",
+                lines=invoice_lines,
             )
 
-            rec.invoice_id = AccountMove.id
+            rec.invoice_id = invoice.id
+
+        return True
 
     # Prevent modification of delivery records after completion.
     @api.constrains("state")

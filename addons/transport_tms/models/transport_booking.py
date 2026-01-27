@@ -234,7 +234,7 @@ class TransportBooking(models.Model):
                 return
 
             rate_data = self.env["transport.b2b.rate"].get_applicable_b2b_rate(
-                transporter_id=None,  # or rec.transporter_id.id (if exists)
+                party_id=None,  # or rec.transporter_id.id (if exists)
                 uom_id=self.env.ref("uom.product_uom_kgm").id,  # example
             )
 

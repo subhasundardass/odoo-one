@@ -15,7 +15,6 @@ access_transport_inbound_manifest,Transport Inbound Manifest,model_transport_inb
 access_transport_inbound_manifest_line,Transport Inbound Manifest Line,model_transport_inbound_manifest_line,base.group_user,1,1,1,1
 access_transport_hub_inventory,Transport Hub Inventory,model_transport_hub_inventory,base.group_user,1,1,1,1
 access_transport_hub_inventory_line,Transport Hub Inventory Line,model_transport_hub_inventory_line,base.group_user,1,1,1,1
-access_transport_account_move,Transport Account Move,model_account_move,base.group_user,1,1,1,1
 access_transport_route_plan,Transport Movement Plan,model_transport_route_plan,base.group_user,1,1,1,1
 access_transport_route_plan_line,Transport Movement Plan Line,model_transport_route_plan_line,base.group_user,1,1,1,1
 access_transport_manifest,Transport Manifest,model_transport_manifest,base.group_user,1,1,1,1
