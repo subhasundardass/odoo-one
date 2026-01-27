@@ -148,3 +148,9 @@ If you find this project helpful, consider buying me a coffee to support my work
 ## HELP
 
 docker exec -it odoo-one-odoo17-1 odoo -d odoo17 -u all --db_host=db --db_user=odoo --db_password='odoo17@2023' --stop-after-init
+# postgres
+docker exec -it odoo-one-db-1 psql -U odoo -d postgres
+# odoo bash
+docker exec -it odoo-one-odoo17-1 bash
+# python 
+odoo shell -d odoo17

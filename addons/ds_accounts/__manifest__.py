@@ -15,8 +15,8 @@
         "views/accounts_journal_views.xml",
         "views/accounts_party_ledger_views.xml",
         ## data
-        "data/journals.xml",
-        "data/accounts.xml",
+        # "data/journals.xml",
+        # "data/accounts.xml",
         ## sequences
         "data/sequences.xml",
         ##navigation (last)

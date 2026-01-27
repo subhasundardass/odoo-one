@@ -137,7 +137,7 @@ class TransportHubReceiveWizard(models.TransientModel):
         )
 
         if received_count:
-            self.manifest_id.state = "received"
+            self.manifest_id.state = "receivable"
         else:
             self.manifest_id.state = "rejected"
 

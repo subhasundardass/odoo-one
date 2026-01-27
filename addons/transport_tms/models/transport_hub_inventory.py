@@ -258,7 +258,7 @@ class TransportHubInventory(models.Model):
             leg = rec.current_leg_id
             qty = rec.qty_received
             good_line_id = rec.manifest_good_line_id.good_line_id.id
-            product = rec.manifest_good_line_id.good_line_id.product_id
+            # product = rec.manifest_good_line_id.good_line_id.product_id
             uom = rec.manifest_good_line_id.good_line_id.unit_id
             inventory_line_model = self.env["transport.hub.inventory.line"]
 
@@ -291,13 +291,13 @@ class TransportHubInventory(models.Model):
                     }
                 )
 
-                picking = self._action_stock_move(
-                    source_location_id=rec.current_leg_id.from_location_id.inventory_location_id.id,
-                    destination_location_id=rec.current_leg_id.to_location_id.inventory_location_id.id,
-                    unit_id=uom.id,
-                    product_id=product.id,
-                    qty_received=rec.qty_received,
-                )
+                # picking = self._action_stock_move(
+                #     source_location_id=rec.current_leg_id.from_location_id.inventory_location_id.id,
+                #     destination_location_id=rec.current_leg_id.to_location_id.inventory_location_id.id,
+                #     unit_id=uom.id,
+                #     product_id=product.id,
+                #     qty_received=rec.qty_received,
+                # )
                 # rec.picking_id = picking.id
 
             # -------------------------------
@@ -326,63 +326,18 @@ class TransportHubInventory(models.Model):
                     }
                 )
 
-                self._action_stock_move(
-                    source_location_id=rec.current_leg_id.from_location_id.inventory_location_id.id,
-                    destination_location_id=rec.current_leg_id.to_location_id.inventory_location_id.id,
-                    unit_id=uom.id,
-                    product_id=product.id,
-                    qty_received=rec.qty_received,
-                )
+                # self._action_stock_move(
+                #     source_location_id=rec.current_leg_id.from_location_id.inventory_location_id.id,
+                #     destination_location_id=rec.current_leg_id.to_location_id.inventory_location_id.id,
+                #     unit_id=uom.id,
+                #     product_id=product.id,
+                #     qty_received=rec.qty_received,
+                # )
 
             # -------------------------------
             # 3️⃣ Mark inventory received
             # -------------------------------
             rec.state = "received"
-
-    # ----Stock inventory moves----
-    def _action_stock_move(
-        self,
-        source_location_id,
-        destination_location_id,
-        unit_id,
-        product_id,
-        qty_received,
-    ):
-        StockMove = self.env["stock.move"]
-        Picking = self.env["stock.picking"]
-        picking_type = self.env.ref("stock.picking_type_internal")
-
-        picking = Picking.create(
-            {
-                "picking_type_id": picking_type.id,
-                "location_id": source_location_id,
-                "location_dest_id": destination_location_id,
-                "origin": self.name,
-            }
-        )
-        # 1️⃣ Create stock move
-        stock_move = StockMove.create(
-            {
-                "name": f"Delivery {self.name}",
-                "product_id": product_id,
-                "product_uom_qty": qty_received,
-                "product_uom": unit_id,
-                "location_id": source_location_id,
-                "location_dest_id": destination_location_id,
-                "picking_id": picking.id,
-            }
-        )
-
-        stock_move._action_confirm()
-        stock_move._action_assign()
-
-        # 👇 VERY IMPORTANT (force done qty)
-        for move_line in picking.move_line_ids:
-            move_line.qty_done = qty_received
-
-        picking.button_validate()
-
-        return picking
 
 
 # ----------------------

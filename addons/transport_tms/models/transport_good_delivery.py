@@ -1,4 +1,4 @@
-from odoo import models, fields, api
+from odoo import models, fields, api, Command
 from odoo.exceptions import ValidationError
 import logging
 
@@ -188,9 +188,9 @@ class TransportGoodDelivery(models.Model):
 
     def _create_inventory_line_outward(self, good_line_id, qty_received):
 
-        StockMove = self.env["stock.move"]
+        # StockMove = self.env["stock.move"]
         Inventory_line_model = self.env["transport.hub.inventory.line"]
-        Picking = self.env["stock.picking"]
+        # Picking = self.env["stock.picking"]
 
         good_line = self.env["transport.goods.line"].browse(good_line_id.id)
         product = good_line.product_id
@@ -198,34 +198,34 @@ class TransportGoodDelivery(models.Model):
         if not product:
             raise ValidationError("Product not defined on Goods Line.")
 
-        location_src_id = self.hub_inventory_id.source_location_id.id
-        location_dest_id = self.hub_inventory_id.destination_location_id.id
+        # location_src_id = self.hub_inventory_id.source_location_id.id
+        # location_dest_id = self.hub_inventory_id.destination_location_id.id
         uom = good_line.unit_id or product.uom_id
 
-        picking = Picking.create(
-            {
-                "picking_type_id": self.env.ref("stock.picking_type_out").id,
-                "location_id": location_src_id,
-                "location_dest_id": location_dest_id,
-                "origin": self.name,
-            }
-        )
+        # picking = Picking.create(
+        #     {
+        #         "picking_type_id": self.env.ref("stock.picking_type_out").id,
+        #         "location_id": location_src_id,
+        #         "location_dest_id": location_dest_id,
+        #         "origin": self.name,
+        #     }
+        # )
 
         # 1️⃣ Create stock move
-        move_out = StockMove.create(
-            {
-                "name": f"Delivery {self.name}",
-                "product_id": product.id,
-                "product_uom_qty": qty_received,
-                "product_uom": uom.id,
-                "location_id": location_src_id,
-                "location_dest_id": location_dest_id,
-                "picking_id": picking.id,
-            }
-        )
-        move_out._action_confirm()
-        move_out._action_assign()
-        move_out._action_done()
+        # move_out = StockMove.create(
+        #     {
+        #         "name": f"Delivery {self.name}",
+        #         "product_id": product.id,
+        #         "product_uom_qty": qty_received,
+        #         "product_uom": uom.id,
+        #         "location_id": location_src_id,
+        #         "location_dest_id": location_dest_id,
+        #         "picking_id": picking.id,
+        #     }
+        # )
+        # move_out._action_confirm()
+        # move_out._action_assign()
+        # move_out._action_done()
 
         Inventory_line_model.create(
             {
@@ -235,7 +235,6 @@ class TransportGoodDelivery(models.Model):
                 "movement_quantity": qty_received,
                 "description": f"Delivered Goods by {self.name}",
                 "unit_id": uom.id,
-                "stock_move_id": move_out.id,
             }
         )
 
@@ -289,31 +288,43 @@ class TransportGoodDelivery(models.Model):
 
     # Generate customer invoice based on delivered quantities.
     def _create_invoice(self):
+
+        AccountMove = self.env["account.move"]
+
         for rec in self:
             if rec.invoice_id:
                 return
 
-            invoice = self.env["account.move"].create(
+            AccountMove = self.env["account.move"].create(
                 {
                     "move_type": "out_invoice",
                     "partner_id": rec.partner_id.id,
                     "invoice_origin": rec.name,
-                    "invoice_line_ids": [
-                        (
-                            0,
-                            0,
+                    # "invoice_line_ids": [
+                    #     (
+                    #         0,
+                    #         0,
+                    #         {
+                    #             "product_id": line.product_id.id,
+                    #             "quantity": line.delivered_qty,
+                    #             "price_unit": line.price_unit,
+                    #         },
+                    #     )
+                    #     for line in rec.delivery_line_ids
+                    # ],
+                    "invoice_line_ids": Command.create(
+                        [
                             {
                                 "product_id": line.product_id.id,
                                 "quantity": line.delivered_qty,
                                 "price_unit": line.price_unit,
-                            },
-                        )
-                        for line in rec.delivery_line_ids
-                    ],
+                            }
+                        ]
+                    ),
                 }
             )
 
-            rec.invoice_id = invoice.id
+            rec.invoice_id = AccountMove.id
 
     # Prevent modification of delivery records after completion.
     @api.constrains("state")
@@ -332,6 +343,8 @@ class TransportGoodDelivery(models.Model):
             if rec.state in ("partial", "done"):
                 # raise ValidationError("Delivered records cannot be modified.")
                 pass
+
+    # -----------------------------------------------------
 
 
 # ---------------------------------------------------------

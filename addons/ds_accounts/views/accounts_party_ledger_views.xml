@@ -4,14 +4,14 @@
     <!-- ================= Customer Ledger Tree ================= -->
     <record id="view_ds_customer_ledger_tree" model="ir.ui.view">
         <field name="name">ds.customer.ledger.tree</field>
-        <field name="model">ds.accounts.account.move.line</field>
+        <field name="model">account.move.line</field>
         <field name="arch" type="xml">
             <tree string="Customer Ledger" create="false" delete="false">
                 <field name="date" />
-                <field name="move_id" />
+                <!-- <field name="move_id" />
                 <field name="partner_id" />
                 <field name="debit" />
-                <field name="credit" />
+                <field name="credit" /> -->
             </tree>
         </field>
     </record>
@@ -19,8 +19,8 @@
     <!-- Action-->
     <record id="action_ds_customer_ledger" model="ir.actions.act_window">
         <field name="name">Customer Ledger</field>
-        <field name="res_model">ds.accounts.account.move.line</field>
-        <field name="view_mode">tree</field>
+        <field name="res_model">account.move.line</field>
+        <!-- <field name="view_mode">tree</field>
         <field name="view_id" ref="view_ds_customer_ledger_tree" />
         <field name="domain">
             [
@@ -32,7 +32,7 @@
             {
             "search_default_group_by_partner": 1
             }
-        </field>
+        </field> -->
     </record>
 
 </odoo>

@@ -98,7 +98,7 @@
         sequence="70" />
     <menuitem id="menu_accounts_coa" name="Books of Accounts"
         parent="menu_accounts_master"
-        action="action_ds_account_account" sequence="2" />
+        action="action_ds_accounts_account" sequence="2" />
     <menuitem id="menu_accounts_journal"
         name="Journals"
         parent="menu_accounts_master"

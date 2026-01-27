@@ -1,5 +1,1 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_ds_account_account_manager,Accounts Manager,model_ds_accounts_account,base.group_system,1,1,1,1
-access_ds_account_journal_manager,Accounts Journal,model_ds_accounts_journal,base.group_system,1,1,1,1
-access_ds_account_move_manager,Accounts Move,model_ds_accounts_account_move,base.group_system,1,1,1,1
-access_ds_account_move_line_manager,Accounts Move Line,model_ds_accounts_account_move_line,base.group_system,1,1,1,1
