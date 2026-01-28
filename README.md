@@ -1,4 +1,4 @@
-# IOdoo with one command.
+# Odoo with one command.
 ``
 Some arguments: Update
 
