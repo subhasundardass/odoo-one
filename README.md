@@ -1,7 +1,6 @@
 # IOdoo with one command.
 ``
-
-Some arguments:
+Some arguments: Update
 
 - First argument (**odoo-one**): Odoo deploy folder
 - Second argument (**10017**): Odoo port
