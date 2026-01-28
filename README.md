@@ -1,18 +1,5 @@
-# Installing Odoo 17.0 with one command (Supports multiple Odoo instances on one server).
-
-## Quick Installation
-
-Install [docker](https://docs.docker.com/get-docker/) and [docker-compose](https://docs.docker.com/compose/install/) yourself, then run the following to set up first Odoo instance @ `localhost:10017` (default master password: `minhng.info`):
-
-```bash
-curl -s https://raw.githubusercontent.com/minhng92/odoo-17-docker-compose/master/run.sh | bash -s odoo-one 10017 20017
-```
-
-and/or run the following to set up another Odoo instance @ `localhost:11017` (default master password: `minhng.info`):
-
-```bash
-curl -s https://raw.githubusercontent.com/minhng92/odoo-17-docker-compose/master/run.sh | bash -s odoo-two 11017 21017
-```
+# IOdoo with one command.
+``
 
 Some arguments:
 
@@ -58,24 +45,6 @@ ports:
 ```
 docker-compose up -d
 ```
-
-- To Use a restart policy, i.e. configure the restart policy for a container, change the value related to **restart** key in **docker-compose.yml** file to one of the following:
-  - `no` = Do not automatically restart the container. (the default)
-  - `on-failure[:max-retries]` = Restart the container if it exits due to an error, which manifests as a non-zero exit code. Optionally, limit the number of times the Docker daemon attempts to restart the container using the :max-retries option.
-  - `always` = Always restart the container if it stops. If it is manually stopped, it is restarted only when Docker daemon restarts or the container itself is manually restarted. (See the second bullet listed in restart policy details)
-  - `unless-stopped` = Similar to always, except that when the container is stopped (manually or otherwise), it is not restarted even after Docker daemon restarts.
-
-```
- restart: always             # run as a service
-```
-
-- To increase maximum number of files watching from 8192 (default) to **524288**. In order to avoid error when we run multiple Odoo instances. This is an _optional step_. These commands are for Ubuntu user:
-
-```
-$ if grep -qF "fs.inotify.max_user_watches" /etc/sysctl.conf; then echo $(grep -F "fs.inotify.max_user_watches" /etc/sysctl.conf); else echo "fs.inotify.max_user_watches = 524288" | sudo tee -a /etc/sysctl.conf; fi
-$ sudo sysctl -p    # apply new config immediately
-```
-
 ## Custom addons
 
 The **addons/** folder contains custom addons. Just put your custom addons if you have any.
@@ -84,7 +53,6 @@ The **addons/** folder contains custom addons. Just put your custom addons if yo
 
 - To change Odoo configuration, edit file: **etc/odoo.conf**.
 - Log file: **etc/odoo-server.log**
-- Default database password (**admin_passwd**) is `minhng.info`, please change it @ [etc/odoo.conf#L60](/etc/odoo.conf#L60)
 
 ## Odoo container management
 
@@ -129,21 +97,6 @@ server {
 - odoo:17
 - postgres:16
 
-## Odoo 17.0 screenshots after successful installation.
-
-<img src="screenshots/odoo-17-welcome-screenshot.png" width="50%">
-
-<img src="screenshots/odoo-17-apps-screenshot.png" width="100%">
-
-<img src="screenshots/odoo-17-sales-screen.png" width="100%">
-
-<img src="screenshots/odoo-17-product-form.png" width="100%">
-
-## ☕ Buy Me a Coffee
-
-If you find this project helpful, consider buying me a coffee to support my work!
-
-<a href="https://buymeacoffee.com/minhng.info" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
 
 ## HELP
 
