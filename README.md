@@ -1,6 +1,5 @@
 # IOdoo with one command.
 ``
-
 Some arguments:
 
 - First argument (**odoo-one**): Odoo deploy folder
