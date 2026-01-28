@@ -33,12 +33,12 @@ class TransportLocation(models.Model):
         string="Customer / Agency",
         help="Required for customer or third-party locations",
     )
-    inventory_location_id = fields.Many2one(
-        "stock.location",
-        string="Inventory Location",
-        required=True,
-        domain=[("usage", "=", "internal")],
-    )
+    # inventory_location_id = fields.Many2one(
+    #     "stock.location",
+    #     string="Inventory Location",
+    #     required=True,
+    #     domain=[("usage", "=", "internal")],
+    # )
 
     # ---------------------------------------------------------
     # OWNERSHIP (LEGAL / COMMERCIAL)

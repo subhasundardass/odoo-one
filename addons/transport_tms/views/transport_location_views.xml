@@ -63,9 +63,9 @@
                         <group>
                             <field name="partner_id" />
                             <field name="is_handover_point" />
-                            <field name="inventory_location_id"
+                            <!-- <field name="inventory_location_id"
                                 widget="many2one"
-                                options="{'no_create': False}" />
+                                options="{'no_create': False}" /> -->
                         </group>
                     </group>
 
