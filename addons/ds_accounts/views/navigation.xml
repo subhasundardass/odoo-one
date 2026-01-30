@@ -20,32 +20,46 @@
         parent="menu_accounts_root"
         sequence="20" />
     
-    <menuitem id="menu_accounts_invoice" name="Invoices"
+    <menuitem
+        id="menu_accounts_operation_customer_invoice"
+        name="Customer Invoices"
         parent="menu_accounts_operation"
-        action="action_dummy" sequence="1" />
+        action="action_accounts_customer_invoice"
+        sequence="10" />
 
-    <menuitem id="menu_accounts_voucher" name="Vouchers"
+    <menuitem
+        id="menu_accounts_operation_vendor_invoice"
+        name="Vendor Bills"
         parent="menu_accounts_operation"
-        action="action_dummy" sequence="2" />
-    <menuitem id="menu_accounts_payment" name="Payments"
-        parent="menu_accounts_operation"
-        action="action_dummy" sequence="3" />
-    <menuitem id="menu_accounts_receipt" name="Receipts"
-        parent="menu_accounts_operation"
-        action="action_dummy" sequence="4" />
-    <menuitem id="menu_accounts_contra" name="Contra"
-        parent="menu_accounts_operation"
-        action="action_dummy" sequence="5" />
+        action="action_accounts_customer_invoice"
+        sequence="11" />
 
-    <menuitem id="menu_accounts_debit_note"
+    <menuitem id="menu_accounts_operation_voucher" name="Vouchers"
+        parent="menu_accounts_operation"
+        action="action_dummy" sequence="12" />
+    <menuitem id="menu_accounts_operation_payment"
+        name="Payments"
+        parent="menu_accounts_operation"
+        action="action_dummy" sequence="13" />
+    <menuitem id="menu_accounts_operation_receipt"
+        name="Receipts"
+        parent="menu_accounts_operation"
+        action="action_dummy" sequence="14" />
+    <menuitem id="menu_accounts_operation_contra"
+        name="Contra"
+        parent="menu_accounts_operation"
+        action="action_dummy" sequence="15" />
+
+    <menuitem id="menu_accounts_operation_debit_note"
         name="Debit Note"
         parent="menu_accounts_operation"
-        action="action_dummy" sequence="6" />
+        action="action_dummy" sequence="16" />    
 
-    <menuitem id="menu_accounts_credit_note"
+    <menuitem id="menu_accounts_operation_credit_note"
         name="Credit Note"
         parent="menu_accounts_operation"
-        action="action_dummy" sequence="7" />
+        action="action_dummy" sequence="17" />
+
 
     <!-- ===================== -->
     <!-- REPORTS MENU -->
@@ -110,7 +124,7 @@
     <menuitem id="menu_accounts_master" name="Master"
         parent="menu_accounts_root"
         sequence="70" />
-    <menuitem id="menu_accounts_coa" name="Books of Accounts"
+    <menuitem id="menu_accounts_coa" name="Chart of Accounts"
         parent="menu_accounts_master"
         action="action_ds_accounts_account" sequence="2" />
     <menuitem id="menu_accounts_journal"

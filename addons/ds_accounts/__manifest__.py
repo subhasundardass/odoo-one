@@ -14,6 +14,8 @@
         "views/accounts_chart_of_account_views.xml",
         "views/accounts_journal_views.xml",
         "views/accounts_party_ledger_views.xml",
+        # --invoices
+        "views/accounts_customer_invoice_views.xml",
         ## data
         # "data/journals.xml",
         # "data/accounts.xml",
