@@ -33,10 +33,10 @@ Long description of module's purpose
         "views/transport_inbound_manifest.xml",
         # hub Operation
         "views/transport_hub_receive_wizard_views.xml",
+        "views/transport_good_delivery_wizard_views.xml",
         "views/transport_hub_inventory_views.xml",
         ## good delivery"
         "views/transport_good_delivery_views.xml",
-        "views/transport_good_delivery_wizard_views.xml",
         ##---Dashboard
         "views/dashboard_views.xml",
         ## data
