@@ -11,7 +11,7 @@ Long description of module's purpose
     "category": "Uncategorized",
     "application": True,
     # any module necessary for this one to work correctly
-    "depends": ["base", "mail", "stock", "ds_accounts"],
+    "depends": ["base", "mail", "stock", "fleet", "ds_accounts"],
     # always loaded
     "data": [
         "security/ir.model.access.csv",
