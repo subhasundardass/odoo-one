@@ -54,3 +54,7 @@ services:
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
     restart: always  
+
+volumes:
+  postgres_data:
+  odoo_data:
