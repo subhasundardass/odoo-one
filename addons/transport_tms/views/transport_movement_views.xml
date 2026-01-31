@@ -36,9 +36,10 @@
 
                 <header>
 
-                    <button name="action_generate_legs_from_plan" string="Generate Legs"
+                    <!-- Generate Legs button hidden - now automatic on booking confirmation -->
+                    <!-- <button name="action_generate_legs_from_plan" string="Generate Legs"
                         type="object" class="oe_highlight" invisible="state != 'confirmed'"
-                    />
+                    /> -->
                     <!-- <button name="action_assign_transporter_to_all_legs" string="Assign
                     Transport" type="object" class="btn-primary"
                     attrs="{'invisible':[('leg_ids','=',[])]}"/> -->

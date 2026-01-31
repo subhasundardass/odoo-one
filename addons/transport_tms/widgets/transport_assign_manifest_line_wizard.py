@@ -1,4 +1,5 @@
 from odoo import models, fields, api
+from odoo.exceptions import ValidationError
 import logging
 
 _logger = logging.getLogger(__name__)
@@ -26,3 +27,9 @@ class AssignManifestLineWizard(models.TransientModel):
 
     available_qty = fields.Float()
     load_qty = fields.Float()
+
+    @api.constrains('load_qty')
+    def _check_load_qty(self):
+        for record in self:
+            if record.load_qty == 0:
+                raise ValidationError("Load quantity cannot be 0. Please enter a valid quantity.")

@@ -463,8 +463,13 @@ class TransportBooking(models.Model):
         # Link movement to booking if needed
         booking.movement_id = movement.id
 
-        # update state
-        booking.state = "confirmed"
+        # Automatically generate legs from the route plan
+        movement.action_generate_legs_from_plan()
+
+        # update state - booking will be 'planned' after legs are generated
+        booking.state = "planned"
+
+        booking.message_post(body="✅ Booking confirmed and movement legs generated automatically.")
 
         return True
 
