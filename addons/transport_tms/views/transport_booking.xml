@@ -32,11 +32,19 @@
         <field name="all_legs_completed" invisible="1" />
         <header>
           <!-- Cancel -->
-          <button name="action_cancel" string="Cancel" type="object" confirm="Are you sure?"
-            class="btn-danger" />
+          <button name="action_cancel" 
+    string="Cancel" 
+    type="object" 
+    class="btn-danger" 
+    invisible="state == 'cancel'"
+    confirm="Are you sure you want to cancel this booking? This action cannot be undone." />
           <!-- Confirm -->
-          <button name="action_confirm_booking" string="Confirm" type="object"
-            class="btn-primary" invisible="state != 'draft'" />
+          <button name="action_confirm_booking"
+        string="Confirm"
+        type="object"
+        class="btn-primary"
+        invisible="state != 'draft'"
+        confirm="Are you sure you want to confirm this booking?" />
           <!-- Make Draft -->
           <button name="action_make_draft" string="Make Draft" type="object"
             class="btn-warning" invisible="state == 'draft'" />

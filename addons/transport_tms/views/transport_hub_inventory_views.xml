@@ -1,198 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <!-- ========================= -->
-    <!-- Tree View (Ledger)        -->
-    <!-- ========================= -->
-    <record id="view_transport_hub_inventory_tree" model="ir.ui.view">
-        <field name="name">transport.hub.inventory.tree</field>
-        <field name="model">transport.hub.inventory</field>
-        <field name="arch" type="xml">
-            <tree string="Hub Inventory Ledger" create="false">
-                <field name="date" />
-                <field name="name" string="ID#" />
-                <field name="manifest_id" />
-                <field name="source_location_id" />
-                <field name="hub_id" />
-                <field name="next_destination_id" />
-                <field name="next_leg_type" />
-                <field name="qty_received" />
-                <field name="qty_instock" string="In Stock" />
-
-                <field name="state"
-                    widget="badge"
-                    decoration-info="state == 'valid'"
-                    decoration-muted="state == 'cancelled'"
-                    decoration-success="state == 'delivered'"
-                    decoration-danger="state == 'partial'"
-                />
-            </tree>
-        </field>
-    </record>
-
-    <!-- ========================= -->
-    <!-- Form View (Read-only)     -->
-    <!-- ========================= -->
-    <record id="view_transport_hub_inventory_form" model="ir.ui.view">
-        <field name="name">transport.hub.inventory.form</field>
-        <field name="model">transport.hub.inventory</field>
-        <field name="arch" type="xml">
-            <form string="Hub Inventory" create="false" edit="false" delete="false">
-                <field name="delivery_created" invisible="1" />
-                <header>
-                    <field name="state" widget="statusbar" />
-
-                    <button
-                        string="Back"
-                        type="action"
-                        icon="fa-arrow-left"
-                        name="%(action_transport_hub_inventory)d"
-                    />
-                    <button
-                        name="action_receive_confirm"
-                        type="object"
-                        string="Receive Confirm"
-                        class="btn-primary"
-                        icon="fa-check"
-                        invisible="state != 'valid'"
-                    />
-                    <button
-                        name="%(action_transport_good_delivery_wizard)d"
-                        type="action"
-                        string="Assign Delivery"
-                        class="btn-primary"
-                        icon="fa-truck"
-                        invisible="delivery_created or state == 'valid'"
-                    />
-
-                </header>
-                <sheet modifiers="{'readonly': [('id', '!=', False)]}">
-
-                    <div class="oe_title">
-                        <h2>
-                            <field name="name" readonly="1" />
-                        </h2>
-                    </div>
-
-                    <group col="12">
-                        <group colspan="4">
-                            <field name="date" />
-                            <field name="hub_id" />
-                            <field name="movement_type" />
-                        </group>
-                        <group colspan="4">
-                            <field name="booking_id" />
-                            <field name="manifest_id" />
-                            <field name="source_location_id" />
-                        </group>
-                        <group colspan="4">
-                            <field name="vehicle_id" string="Vehicle" />
-                            <field name="driver_id" string="Driver" />
-                            <field name="destination_location_id" />
-                        </group>
-                    </group>
-                    <group>
-                        <field name="remarks" />
-                    </group>
-
-
-                    <!-- GOODS -->
-                    <notebook>
-                        <page string="Inventory Line">
-
-                            <field name="inventory_line_ids">
-                                <tree editable="bottom" delete="0" create="0">
-                                    <field name="movement_type" widget="badge"
-                                        decoration-success="movement_type == 'in'"
-                                        decoration-danger="movement_type == 'out'" />
-                                    <field name="date" />
-                                    <field name="good_type_id" />
-                                    <field name="good_description" />
-                                    <field name="movement_quantity" />
-                                    <field name="description" />
-
-                                </tree>
-                            </field>
-                        </page>
-                        <page string="Goods Details">
-                            <group col="12">
-                                <group colspan="4">
-                                    <field name="good_type_id" />
-                                    <field name="good_description" />
-                                </group>
-
-                                <group colspan="4">
-                                    <field name="qty_loaded" />
-                                    <field name="qty_received" />
-                                </group>
-
-                                <group colspan="4">
-                                    <field name="good_status" />
-                                    <field name="docket_no" />
-                                </group>
-                            </group>
-                        </page>
-                    </notebook>
-
-
-                    <!-- <group>
-                        <group>
-                            <field name="source_location_id" />
-                        </group>
-                        <group>
-                            <field name="destination_location_id" />
-                        </group>
-                    </group> -->
-
-
-                </sheet>
-                <div class="oe_chatter">
-                    <field name="message_follower_ids" groups="base.group_user" />
-                    <field name="message_ids" widget="mail_thread" />
-                </div>
-            </form>
-        </field>
-    </record>
-
-    <!-- ========================= -->
-    <!-- Search View               -->
-    <!-- ========================= -->
-    <!-- <record id="view_transport_hub_inventory_search" model="ir.ui.view">
-        <field name="name">transport.hub.inventory.search</field>
-        <field name="model">transport.hub.inventory</field>
-        <field name="arch" type="xml">
-            <search string="Hub Inventory">
-                <field name="name"/>
-                <field name="booking_id"/>
-                <field name="hub_id"/>
-                <field name="goods_type_id"/>
-
-                <filter name="filter_in" string="Inward" domain="[('movement_type','=','in')]"/>
-                <filter name="filter_out" string="Outward" domain="[('movement_type','=','out')]"/>
-
-                <separator/>
-
-                <filter name="filter_valid" string="Valid" domain="[('state','=','valid')]"/>
-                <filter name="filter_cancelled" string="Cancelled" domain="[('state','=','cancelled')]"/>
-
-                <group expand="0" string="Group By">
-                    <filter string="Hub" context="{'group_by':'hub_id'}"/>
-                    <filter string="Goods Type" context="{'group_by':'goods_type_id'}"/>
-                    <filter string="Movement Type" context="{'group_by':'movement_type'}"/>
-                    <filter string="Date (Day)" context="{'group_by':'date:day'}"/>
-                </group>
-            </search>
-        </field>
-    </record> -->
-
-
-    <!-- ========================= -->
-    <!-- Action                    -->
-    <!-- ========================= -->
+    <!-- ================================================= -->
+    <!-- ACTION : Hub Inventory (MUST COME FIRST)          -->
+    <!-- ================================================= -->
     <record id="action_transport_hub_inventory" model="ir.actions.act_window">
         <field name="name">Hub Inventory Ledger</field>
         <field name="res_model">transport.hub.inventory</field>
         <field name="view_mode">tree,form</field>
-        <!-- <field name="view_id" ref="view_transport_hub_inventory_tree" /> -->
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 No hub inventory movements found.
@@ -203,5 +18,136 @@
         </field>
     </record>
 
+    <!-- ========================= -->
+    <!-- Tree View                -->
+    <!-- ========================= -->
+    <record id="view_transport_hub_inventory_tree" model="ir.ui.view">
+        <field name="name">transport.hub.inventory.tree</field>
+        <field name="model">transport.hub.inventory</field>
+        <field name="arch" type="xml">
+            <tree string="Hub Inventory Ledger" create="false">
+                <field name="date"/>
+                <field name="name" string="ID#"/>
+                <field name="manifest_id"/>
+                <field name="source_location_id"/>
+                <field name="hub_id"/>
+                <field name="next_destination_id"/>
+                <field name="next_leg_type"/>
+                <field name="qty_received"/>
+                <field name="qty_instock" string="In Stock"/>
+                <field name="state"
+                       widget="badge"
+                       decoration-info="state == 'valid'"
+                       decoration-muted="state == 'cancelled'"
+                       decoration-success="state == 'delivered'"
+                       decoration-danger="state == 'partial'"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- ========================= -->
+    <!-- Form View                -->
+    <!-- ========================= -->
+    <record id="view_transport_hub_inventory_form" model="ir.ui.view">
+        <field name="name">transport.hub.inventory.form</field>
+        <field name="model">transport.hub.inventory</field>
+        <field name="arch" type="xml">
+            <form string="Hub Inventory" create="false" edit="false" delete="false">
+                <field name="delivery_created" invisible="1"/>
+                <header>
+                    <field name="state" widget="statusbar"/>
+
+                    <button string="Back"
+                            type="action"
+                            icon="fa-arrow-left"
+                            name="%(action_transport_hub_inventory)d"/>
+
+                    <button name="action_receive_confirm"
+                            type="object"
+                            string="Receive Confirm"
+                            class="btn-primary"
+                            icon="fa-check"
+                            invisible="state != 'valid'"/>
+
+                    <button name="%(action_transport_good_delivery_wizard)d"
+                            type="action"
+                            string="Assign Delivery"
+                            class="btn-primary"
+                            icon="fa-truck"
+                            invisible="delivery_created or state == 'valid'"/>
+                </header>
+
+                <sheet>
+                    <div class="oe_title">
+                        <h2>
+                            <field name="name" readonly="1"/>
+                        </h2>
+                    </div>
+
+                    <group col="12">
+                        <group colspan="4">
+                            <field name="date"/>
+                            <field name="hub_id"/>
+                            <field name="movement_type"/>
+                        </group>
+                        <group colspan="4">
+                            <field name="booking_id"/>
+                            <field name="manifest_id"/>
+                            <field name="source_location_id"/>
+                        </group>
+                        <group colspan="4">
+                            <field name="vehicle_id"/>
+                            <field name="driver_id"/>
+                            <field name="destination_location_id"/>
+                        </group>
+                    </group>
+
+                    <group>
+                        <field name="remarks"/>
+                    </group>
+
+                    <notebook>
+                        <page string="Inventory Line">
+                            <field name="inventory_line_ids">
+                                <tree editable="bottom" create="0" delete="0">
+                                    <field name="movement_type"
+                                           widget="badge"
+                                           decoration-success="movement_type == 'in'"
+                                           decoration-danger="movement_type == 'out'"/>
+                                    <field name="date"/>
+                                    <field name="good_type_id"/>
+                                    <field name="good_description"/>
+                                    <field name="movement_quantity"/>
+                                    <field name="description"/>
+                                </tree>
+                            </field>
+                        </page>
+
+                        <page string="Goods Details">
+                            <group col="12">
+                                <group colspan="4">
+                                    <field name="good_type_id"/>
+                                    <field name="good_description"/>
+                                </group>
+                                <group colspan="4">
+                                    <field name="qty_loaded"/>
+                                    <field name="qty_received"/>
+                                </group>
+                                <group colspan="4">
+                                    <field name="good_status"/>
+                                    <field name="docket_no"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
 
 </odoo>

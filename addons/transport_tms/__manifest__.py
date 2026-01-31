@@ -32,11 +32,11 @@ Long description of module's purpose
         # inbound-manifest-batch
         "views/transport_inbound_manifest.xml",
         # hub Operation
+        "views/transport_good_delivery_wizard_views.xml",
         "views/transport_hub_receive_wizard_views.xml",
         "views/transport_hub_inventory_views.xml",
         ## good delivery"
         "views/transport_good_delivery_views.xml",
-        "views/transport_good_delivery_wizard_views.xml",
         ##---Dashboard
         "views/dashboard_views.xml",
         ## data
@@ -59,5 +59,5 @@ Long description of module's purpose
         ],
     },
     # migration
-    "post_init_hook": "init_chatter_on_existing_manifests",
+    # "post_init_hook": "init_chatter_on_existing_manifests",
 }
