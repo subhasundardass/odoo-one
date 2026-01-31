@@ -53,7 +53,7 @@ The **addons/** folder contains custom addons. Just put your custom addons if yo
 - To change Odoo configuration, edit file: **etc/odoo.conf**.
 - Log file: **etc/odoo-server.log**
 
-## Odoo container management
+## Odoo container management 2
 
 **Run Odoo**:
 
