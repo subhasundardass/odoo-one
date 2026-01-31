@@ -10,4 +10,6 @@ addons/transport_tms/controllers/__pycache__
 addons/transport_tms/migrations/__pycache__
 addons/ds_accounts/__pycache__
 addons/ds_accounts/models/__pycache__
-
+addons/ds_accounts/controllers/__pycache__
+addons/ds_accounts/migrations/__pycache__
+addons/ds_accounts/widgets/__pycache__
