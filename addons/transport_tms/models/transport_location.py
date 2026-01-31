@@ -161,7 +161,7 @@ class TransportLocation(models.Model):
             # -------------------------
             if rec.owner_type == "customer":
                 rec.routing_type = "spoke"
-                rec.operational_type = "pickup_point"
+                # rec.operational_type = "pickup_point"
 
             # -------------------------
             # THIRD PARTY LOCATIONS
@@ -179,6 +179,14 @@ class TransportLocation(models.Model):
             elif rec.owner_type == "own":
                 # Do NOT force hub
                 rec.is_handover_point = False
+
+    @api.constrains("owner_type", "operational_type")
+    def _check_customer_operational_type(self):
+        for rec in self:
+            if rec.owner_type == "customer" and rec.operational_type in ["hub","handover_point",]:
+                raise ValidationError(
+                    "Customers can only have operational type: Pickup Point or Delivery Point"
+                )
 
     @api.constrains("owner_type", "partner_id")
     def _check_partner_requirement(self):
