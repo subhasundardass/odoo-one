@@ -6,3 +6,5 @@ etc/filestore/
 addons/transport_tms/models/__pycache__
 addons/transport_tms/widgets/__pycache__
 addons/transport_tms/__pycache__
+addons/ds_accounts/__pycache__
+addons/ds_accounts/models/__pycache__
