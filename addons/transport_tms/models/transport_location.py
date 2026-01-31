@@ -177,8 +177,10 @@ class TransportLocation(models.Model):
             # OWN LOCATIONS
             # -------------------------
             elif rec.owner_type == "own":
-                # Do NOT force hub
+                rec.routing_type = "hub"  # Force hub
+                rec.operational_type = "hub"  # Force hub operations
                 rec.is_handover_point = False
+                
 
     @api.constrains("owner_type", "operational_type")
     def _check_customer_operational_type(self):
@@ -187,6 +189,19 @@ class TransportLocation(models.Model):
                 raise ValidationError(
                     "Customers can only have operational type: Pickup Point or Delivery Point"
                 )
+
+    @api.constrains('owner_type', 'routing_type', 'operational_type')
+    def _check_own_must_be_hub(self):
+        for rec in self:
+            if rec.owner_type == 'own':
+                if rec.routing_type != 'hub':
+                    raise ValidationError(
+                        "Own locations must have Network Role as 'Hub'"
+                    )
+                if rec.operational_type != 'hub':
+                    raise ValidationError(
+                        "Own locations must have Operational Role as 'Hub Operations'"
+                    )
 
     @api.constrains("owner_type", "partner_id")
     def _check_partner_requirement(self):
