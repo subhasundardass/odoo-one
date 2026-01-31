@@ -4,7 +4,7 @@ import logging
 
 _logger = logging.getLogger(__name__)
 
-
+# func
 class TransportBooking(models.Model):
     _name = "transport.booking"
     _description = "Transport Booking (LR)"
