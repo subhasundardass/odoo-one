@@ -1,6 +1,6 @@
 {
     "name": "ds_accounts",
-    "summary": "General Accounts & Invoicings",
+    "summary": "General Accounts & Invoicings - Dorii Software",
     "version": "1.0",
     "application": True,
     "author": "Dorii Software",
