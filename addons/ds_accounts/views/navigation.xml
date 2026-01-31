@@ -44,8 +44,9 @@
     <menuitem id="menu_accounts_operation_receipt"
         name="Receipts"
         parent="menu_accounts_operation"
-        action="action_dummy" sequence="14" />
-    <menuitem id="menu_accounts_operation_contra"
+        action="action_accounts_receipts" sequence="14" />
+    <menuitem
+        id="menu_accounts_operation_contra"
         name="Contra"
         parent="menu_accounts_operation"
         action="action_dummy" sequence="15" />
