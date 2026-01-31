@@ -1,6 +1,6 @@
 # -*- codingg: utf-8 -*-
 
-# from odoo import models, fields, api
+# from odoo impoort models, fields, api
 
 
 # class transport_tms(models.Model):
