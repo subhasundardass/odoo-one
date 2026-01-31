@@ -58,8 +58,8 @@
               <field name="partner_id" widget="many2one_avatar" />
 
               <field name="pickup_location_id" required="1"
-                domain="[('partner_id','=',partner_id)]"
-                context="{'default_partner_id': partner_id, 'default_owner_type': 'customer', 'default_location_type': 'spoke'}"
+                domain="[('partner_id','=',partner_id),('owner_type', '!=', 'own'), ('facility_type', '!=', 'warehouse'), ('operational_type', 'in', ['pickup_point', 'handover_point']), ('id', '!=', delivery_location_id)]"
+                context="{'default_partner_id': partner_id, 'default_owner_type': 'customer', 'default_location_type': 'spoke', 'default_operational_type': 'pickup_point'}"
                 widget="many2one_avatar" />
 
               <field name="docket_no" />
@@ -69,9 +69,8 @@
               <field name="name" />
 
               <field name="delivery_location_id" required="1"
-                domain="[('partner_id','=',partner_id)]"
-                context="{'default_partner_id': partner_id, 'default_owner_type': 'customer',
-            'default_location_type': 'spoke'}"
+                domain="[('partner_id','=',partner_id),('owner_type', '!=', 'own'), ('facility_type', '!=', 'warehouse'), ('operational_type', 'in', ['delivery_point', 'handover_point']), ('id', '!=', pickup_location_id)]"
+                context="{'default_partner_id': partner_id, 'default_owner_type': 'customer', 'default_location_type': 'spoke', 'default_operational_type': 'delivery_point'}"
                 widget="many2one_avatar" />
 
               <field name="sales_person" />
