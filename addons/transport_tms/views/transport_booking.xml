@@ -140,8 +140,8 @@
 
             <!-- ✅ RIGHT COLUMN -->
             <group>
-              <!-- <field name="oda_charge" string="ODA Charge" />
-              <field name="other_charge" string="Other Charge" /> -->
+              <field name="oda_charge" string="ODA Charge" />
+              <field name="other_charge" string="Other Charge" />
               <field name="gst_amount" string="GST Total" />
               <field name="total_amount" string="Grand Total" required="1" />
               <label for="balance_amount" string="Amount Due" />
@@ -150,7 +150,6 @@
                   <field name="balance_amount" nolabel="1" readonly="1" />
                 </span>
               </div>
-
             </group>
           </group>
 

@@ -109,9 +109,7 @@ class TransportHubInventory(models.Model):
     )
 
     qty_loaded = fields.Float(string="Quantity Loaded", default="0.00")
-
     qty_received = fields.Float(string="Quantity Received", default="0.00")
-
     qty_instock = fields.Float(
         string="Quantity Instock",
         compute="_compute_qty_instock",
