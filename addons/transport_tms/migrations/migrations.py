@@ -3,15 +3,15 @@ from odoo.tools import mute_logger
 
 
 @mute_logger("odoo.sql_db")
-def init_chatter_on_existing_manifests(cr, registry):
+def init_chatter_on_existing_manifests(env):
     """
     Migration script to initialize chatter for existing transport.manifest records.
     Adds mail.thread & mail.activity.mixin fields if missing.
     """
-    env = api.Environment(cr, SUPERUSER_ID, {})
+    # env = api.Environment(cr, SUPERUSER_ID, {})
 
     # Step 1: Ensure the table has the required JSONB columns
-    cr.execute(
+    env.cr.execute(
         """
         ALTER TABLE transport_manifest
         ADD COLUMN IF NOT EXISTS message_ids jsonb,

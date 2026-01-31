@@ -13,7 +13,7 @@ class TransportB2BRate(models.Model):
         copy=False,
     )
 
-    transporter_id = fields.Many2one(
+    party_id = fields.Many2one(
         "res.partner",
         string="Transporter",
         domain=[("partner_type", "=", "customer_b2b")],
@@ -47,13 +47,13 @@ class TransportB2BRate(models.Model):
         return super().create(vals)
 
     @api.model
-    def get_b2b_rate(self, transporter_id, uom_id):
+    def get_b2b_rate(self, party_id, uom_id):
         """
         Returns rate record or False
         """
         return self.search(
             [
-                ("transporter_id", "=", transporter_id),
+                ("party_id", "=", party_id),
                 ("uom_id", "=", uom_id),
                 ("active", "=", True),
             ],
@@ -88,7 +88,7 @@ class TransportB2BRate(models.Model):
         # 1️⃣ Transporter-specific rate
         if party_id:
             customer_rate = self.search(
-                domain_date + [("transporter_id", "=", party_id)],
+                domain_date + [("party_id", "=", party_id)],
                 order="valid_from desc",
                 limit=1,
             )
@@ -99,9 +99,9 @@ class TransportB2BRate(models.Model):
                     "rate_id": customer_rate.id,
                 }
 
-        # 2️⃣ Base rate (transporter_id = False)
+        # 2️⃣ Base rate (party_id = False)
         base_rate = self.search(
-            domain_date + [("transporter_id", "=", False)],
+            domain_date + [("party_id", "=", False)],
             order="valid_from desc",
             limit=1,
         )

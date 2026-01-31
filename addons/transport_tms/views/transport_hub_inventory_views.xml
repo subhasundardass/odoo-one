@@ -1,4 +1,24 @@
+    
 <odoo>
+
+<!-- ========================= -->
+    <!-- Action                    -->
+    <!-- ========================= -->
+    <record id="action_transport_hub_inventory" model="ir.actions.act_window">
+        <field name="name">Hub Inventory Ledger</field>
+        <field name="res_model">transport.hub.inventory</field>
+        <field name="view_mode">tree,form</field>
+        <!-- <field name="view_id" ref="view_transport_hub_inventory_tree" /> -->
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No hub inventory movements found.
+            </p>
+            <p>
+                This ledger records all inward and outward goods movements at hubs.
+            </p>
+        </field>
+    </record>
+
 
     <!-- ========================= -->
     <!-- Tree View (Ledger)        -->
@@ -185,23 +205,6 @@
     </record> -->
 
 
-    <!-- ========================= -->
-    <!-- Action                    -->
-    <!-- ========================= -->
-    <record id="action_transport_hub_inventory" model="ir.actions.act_window">
-        <field name="name">Hub Inventory Ledger</field>
-        <field name="res_model">transport.hub.inventory</field>
-        <field name="view_mode">tree,form</field>
-        <!-- <field name="view_id" ref="view_transport_hub_inventory_tree" /> -->
-        <field name="help" type="html">
-            <p class="o_view_nocontent_smiling_face">
-                No hub inventory movements found.
-            </p>
-            <p>
-                This ledger records all inward and outward goods movements at hubs.
-            </p>
-        </field>
-    </record>
 
 
 </odoo>
