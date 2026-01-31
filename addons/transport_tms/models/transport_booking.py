@@ -79,24 +79,52 @@ class TransportBooking(models.Model):
     fuel_surcharge = fields.Monetary(currency_field="currency_id", default=0)
     value_surcharge = fields.Monetary(currency_field="currency_id", default=0)
     oda_charge = fields.Monetary(string="ODA Charge")
-    gst_rate = fields.Selection(
-        [
-            ("0", "0%"),
-            ("5", "5%"),
-            ("12", "12%"),
-            ("18", "18%"),
-        ],
-        string="GST %",
-        default="5",
-        required=True,
-    )
-    gst_amount = fields.Monetary(
-        string="GST Amount", compute="_compute_gst", store=True
+
+    tax_line_ids = fields.One2many(
+        "transport.booking.tax.line",
+        "booking_id",
+        string="Tax line",
     )
 
-    total_amount = fields.Monetary(
-        string="Total Amount", compute="_compute_gst", store=True
+    amount_untaxed = fields.Monetary(
+        string="Untaxed Amount",
+        compute="_compute_amounts",
+        store=True,
+        currency_field="currency_id",
     )
+
+    amount_tax = fields.Monetary(
+        string="GST Total",
+        compute="_compute_amounts",
+        store=True,
+        currency_field="currency_id",
+    )
+
+    amount_total = fields.Monetary(
+        string="Grand Total",
+        compute="_compute_amounts",
+        store=True,
+        currency_field="currency_id",
+    )
+
+    # gst_rate = fields.Selection(
+    #     [
+    #         ("0", "0%"),
+    #         ("5", "5%"),
+    #         ("12", "12%"),
+    #         ("18", "18%"),
+    #     ],
+    #     string="GST %",
+    #     default="5",
+    #     required=True,
+    # )
+    # gst_amount = fields.Monetary(
+    #     string="GST Amount", compute="_compute_gst", store=True
+    # )
+
+    # total_amount = fields.Monetary(
+    #     string="Total Amount", compute="_compute_gst", store=True
+    # )
 
     # route_template_id = fields.Many2one(
     #     "transport.route.template",
@@ -169,7 +197,7 @@ class TransportBooking(models.Model):
     note = fields.Text()
 
     ##-- Delivery --------------------
-    pod_file = fields.Binary(required=True)
+    pod_file = fields.Binary()
     pod_filename = fields.Char()
     received_by = fields.Char(
         string="Received By",
@@ -238,7 +266,8 @@ class TransportBooking(models.Model):
                 uom_id=self.env.ref("uom.product_uom_kgm").id,  # example
             )
 
-            rec.freight_amount = rate_data["rate"] * rec.total_charged_weight
+            if not rec.freight_amount:
+                rec.freight_amount = rate_data["rate"] * rec.total_charged_weight
 
     @api.constrains(
         "partner_id",
@@ -289,25 +318,25 @@ class TransportBooking(models.Model):
                     "Delivery location does not belong to the customer"
                 )
 
-    @api.constrains("qty", "actual_weight", "charged_weight", "goods_value")
-    def _check_goods_line(self):
-        for line in self:
-            if line.qty <= 0:
-                raise ValidationError("Quantity must be greater than 0.")
+    # @api.constrains("qty", "actual_weight", "charged_weight", "goods_value")
+    # def _check_goods_line(self):
+    #     for line in self:
+    #         if line.qty <= 0:
+    #             raise ValidationError("Quantity must be greater than 0.")
 
-            if line.actual_weight < 0:
-                raise ValidationError("Actual weight cannot be negative.")
+    #         if line.actual_weight < 0:
+    #             raise ValidationError("Actual weight cannot be negative.")
 
-            if line.charged_weight < 0:
-                raise ValidationError("Charged weight cannot be negative.")
+    #         if line.charged_weight < 0:
+    #             raise ValidationError("Charged weight cannot be negative.")
 
-            if line.charged_weight < line.actual_weight:
-                raise ValidationError(
-                    "Charged weight cannot be less than actual weight."
-                )
+    #         if line.charged_weight < line.actual_weight:
+    #             raise ValidationError(
+    #                 "Charged weight cannot be less than actual weight."
+    #             )
 
-            if line.goods_value < 0:
-                raise ValidationError("Goods value cannot be negative.")
+    #         if line.goods_value < 0:
+    #             raise ValidationError("Goods value cannot be negative.")
 
     @api.constrains(
         "freight_amount",
@@ -334,31 +363,31 @@ class TransportBooking(models.Model):
                         f"{field.replace('_', ' ').title()} cannot be negative."
                     )
 
-    @api.depends(
-        "freight_amount",
-        "value_surcharge",
-        "docket_charge",
-        "handling_charge",
-        "oda_charge",
-        "fuel_surcharge",
-        "other_charge",
-        "gst_rate",
-    )
-    def _compute_gst(self):
-        for rec in self:
-            base_amount = (
-                rec.freight_amount
-                + rec.value_surcharge
-                + rec.docket_charge
-                + rec.handling_charge
-                + rec.oda_charge
-                + rec.fuel_surcharge
-                + rec.other_charge
-            )
+    # @api.depends(
+    #     "freight_amount",
+    #     "value_surcharge",
+    #     "docket_charge",
+    #     "handling_charge",
+    #     "oda_charge",
+    #     "fuel_surcharge",
+    #     "other_charge",
+    #     "gst_rate",
+    # )
+    # def _compute_gst(self):
+    #     for rec in self:
+    #         base_amount = (
+    #             rec.freight_amount
+    #             + rec.value_surcharge
+    #             + rec.docket_charge
+    #             + rec.handling_charge
+    #             + rec.oda_charge
+    #             + rec.fuel_surcharge
+    #             + rec.other_charge
+    #         )
 
-            gst_percent = float(rec.gst_rate or 0)
-            rec.gst_amount = base_amount * (gst_percent / 100)
-            rec.total_amount = base_amount + rec.gst_amount
+    #         gst_percent = float(rec.gst_rate or 0)
+    #         rec.gst_amount = base_amount * (gst_percent / 100)
+    #         rec.total_amount = base_amount + rec.gst_amount
 
     @api.depends("movement_id")
     def _compute_movement_legs(self):
@@ -373,10 +402,72 @@ class TransportBooking(models.Model):
             )
         return super().create(vals)
 
-    @api.depends("total_amount", "advance_amount")  # total_amount is computed
+    @api.depends("amount_total", "advance_amount")  # total_amount is computed
     def _compute_balance(self):
         for rec in self:
-            rec.balance_amount = (rec.total_amount or 0.0) - (rec.advance_amount or 0.0)
+            rec.balance_amount = rec.amount_total - rec.advance_amount
+
+
+    @api.depends(
+        "freight_amount",
+        "value_surcharge",
+        "docket_charge",
+        "handling_charge",
+        "oda_charge",
+        "fuel_surcharge",
+        "other_charge",
+        "tax_line_ids.tax_id",
+        "partner_id",
+        "currency_id",
+    )
+    def _compute_amounts(self):
+        for booking in self:
+            base_amount = (
+                booking.freight_amount
+                + booking.value_surcharge
+                + booking.docket_charge
+                + booking.handling_charge
+                + booking.oda_charge
+                + booking.fuel_surcharge
+                + booking.other_charge
+            )
+
+            taxes = booking.tax_line_ids.mapped("tax_id")
+            tax_total = 0.0
+
+            if taxes:
+                res = taxes.compute_all(
+                    base_amount,
+                    currency=booking.currency_id,
+                    quantity=1,
+                    product=None,
+                    partner=booking.partner_id,
+                )
+
+                tax_total = res["total_included"] - res["total_excluded"]
+
+                for line in booking.tax_line_ids:
+                    line.amount = sum(
+                        t["amount"] for t in res["taxes"] if t["id"] == line.tax_id.id
+                    )
+            booking.amount_untaxed = base_amount
+            booking.amount_tax = tax_total
+            booking.amount_total = base_amount + tax_total
+
+
+    @api.onchange(
+        "freight_amount",
+        "value_surcharge",
+        "docket_charge",
+        "handling_charge",
+        "oda_charge",
+        "fuel_surcharge",
+        "other_charge",
+        "tax_line_ids",
+    )
+    def _onchange_recompute_tax(self):
+        self._compute_amounts()
+
 
     @api.onchange("partner_id")
     def _onchange_partner_id(self):
@@ -510,6 +601,9 @@ class TransportBooking(models.Model):
 
         if not self.movement_id or not self.movement_id.leg_ids:
             raise ValidationError("No movement legs found.")
+        
+        if not self.pod_file:
+            raise ValidationError("POD document is required before marking as delivered.")
 
         # ------------------------------------------------
         # 1️⃣ Complete all movement legs safely
@@ -586,7 +680,7 @@ class TransportBooking(models.Model):
 
         # Optional audit fields
         self.delivery_date = fields.Datetime.now()
-        self.delivered_by_id = self.env.user.id
+        # self.delivered_by_id = self.env.user.id
 
         self.message_post(
             body="❌ Delivery failed. Goods are still in company custody."
@@ -633,6 +727,18 @@ class TransportBooking(models.Model):
 
         if self.invoice_id:
             return self.invoice_id
+        
+        base_amount = (
+                self.freight_amount
+                + self.value_surcharge
+                + self.docket_charge
+                + self.handling_charge
+                + self.oda_charge
+                + self.fuel_surcharge
+                + self.other_charge
+            )
+        
+        taxes = self.tax_line_ids.mapped("tax_id")
 
         invoice = self.env["account.move"].create(
             {
@@ -647,7 +753,8 @@ class TransportBooking(models.Model):
                         {
                             "name": f"Transport Charges - {self.name}",
                             "quantity": 1,
-                            "price_unit": self.total_amount,
+                            "price_unit": self.amount_untaxed,
+                            "tax_ids": [(6, 0, taxes.ids)],
                         },
                     )
                 ],
@@ -671,6 +778,39 @@ class TransportBooking(models.Model):
             goods_lines=self.goods_line_ids,
             remarks=f"Delivered - Booking {self.name}",
         )
+
+    # def _compute_booking_taxes(self):
+    #     for booking in self:
+    #         booking.tax_line_ids.unlink()
+
+    #         base_amount = (
+    #             booking.freight_amount
+    #             + booking.value_surcharge
+    #             + booking.docket_charge
+    #             + booking.handling_charge
+    #             + booking.oda_charge
+    #             + booking.fuel_surcharge
+    #             + booking.other_charge
+    #         )
+
+    #         taxes = booking.tax_line_ids.mapped("tax_id")
+    #         if not taxes:
+    #             continue
+
+    #         tax_res = taxes.compute_all(
+    #             base_amount,
+    #             currency=booking.currency_id,
+    #             quantity=1,
+    #             product=None,
+    #             partner=booking.partner_id,
+    #         )
+
+    #         for tax in tax_res["taxes"]:
+    #             self.env["transport.booking.tax.line"].create({
+    #                 "booking_id": booking.id,
+    #                 "tax_id": tax["id"],
+    #                 "amount": tax["amount"],
+    #             })
 
     @api.depends("movement_id.leg_ids.state")
     def _compute_all_legs_completed(self):

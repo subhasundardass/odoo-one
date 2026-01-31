@@ -66,6 +66,26 @@ class TransportGoodsLine(models.Model):
             vals["product_id"] = product.id
 
         return super().create(vals)
+    
+    @api.constrains("qty", "actual_weight", "charged_weight", "goods_value")
+    def _check_goods_line(self):
+        for line in self:
+            if line.qty <= 0:
+                raise ValidationError("Quantity must be greater than 0.")
+
+            if line.actual_weight < 0:
+                raise ValidationError("Actual weight cannot be negative.")
+
+            if line.charged_weight < 0:
+                raise ValidationError("Charged weight cannot be negative.")
+
+            if line.charged_weight < line.actual_weight:
+                raise ValidationError(
+                    "Charged weight cannot be less than actual weight."
+                )
+
+            if line.goods_value < 0:
+                raise ValidationError("Goods value cannot be negative.")
 
     # @api.model
     # def create_transport_good_line(

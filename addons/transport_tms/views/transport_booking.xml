@@ -12,12 +12,12 @@
         <field name="delivery_location_id" />
         <field name="freight_amount" />
         <field name="booking_source_ref" string="Booking Ref" />
-        <field name="total_amount" />
+        <field name="amount_total" />
         <field name="advance_amount" />
         <field name="balance_amount" />
         <field name="state" widget="badge" decoration-primary="state == 'draft'"
           decoration-info="state == 'confirmed'" decoration-success="state == 'planned'"
-          decoration-muted="state == 'cancel'" />
+          decoration-muted="state == 'cancelled'" />
         <field name="create_date" />
         <field name="create_uid" />
       </tree>
@@ -128,7 +128,7 @@
               <field name="freight_amount" string="Charged Amount" required="1" />
               <field name="advance_amount" string="Advance Amount" />
               <field name="docket_charge" string="Docket Charge" />
-              <field name="gst_rate" string="GST(%)" required="1" />
+              <!-- <field name="gst_rate" string="GST(%)" required="1" /> -->
             </group>
 
             <!-- ✅ MIDDLE COLUMN -->
@@ -136,20 +136,30 @@
               <field name="value_surcharge" string="Value Surcharge" />
               <field name="fuel_surcharge" string="Fuel Surcharge" />
               <field name="handling_charge" string="Handling Charge" />
+
+              <field name="tax_line_ids">
+                <tree editable="bottom">
+                  <field name="tax_id"/>
+                  <!-- <field name="amount" readonly=1/> -->
+                </tree>
+              </field>
             </group>
 
             <!-- ✅ RIGHT COLUMN -->
             <group>
               <field name="oda_charge" string="ODA Charge" />
               <field name="other_charge" string="Other Charge" />
-              <field name="gst_amount" string="GST Total" />
-              <field name="total_amount" string="Grand Total" required="1" />
+              <!-- <field name="gst_amount" string="GST Total" /> -->
+              <!-- <field name="total_amount" string="Grand Total" required="1" /> -->
               <label for="balance_amount" string="Amount Due" />
               <div>
                 <span style="font-weight:700; font-size:14px; color:#d32f2f;">
                   <field name="balance_amount" nolabel="1" readonly="1" />
                 </span>
               </div>
+              <field name="amount_untaxed" readonly="1"/>
+              <field name="amount_tax" readonly="1"/>
+              <field name="amount_total" readonly="1" class="oe_highlight"/>
             </group>
           </group>
 
