@@ -46,19 +46,19 @@ class TransportB2BRate(models.Model):
             )
         return super().create(vals)
 
-    @api.model
-    def get_b2b_rate(self, transporter_id, uom_id):
-        """
-        Returns rate record or False
-        """
-        return self.search(
-            [
-                ("transporter_id", "=", transporter_id),
-                ("uom_id", "=", uom_id),
-                ("active", "=", True),
-            ],
-            limit=1,
-        )
+    # @api.model
+    # def get_b2b_rate(self, transporter_id, uom_id):
+    #     """
+    #     Returns rate record or False
+    #     """
+    #     return self.search(
+    #         [
+    #             ("transporter_id", "=", transporter_id),
+    #             ("uom_id", "=", uom_id),
+    #             ("active", "=", True),
+    #         ],
+    #         limit=1,
+    #     )
 
     @api.model
     def get_applicable_b2b_rate(
@@ -85,7 +85,7 @@ class TransportB2BRate(models.Model):
             ("uom_id", "=", uom_id),
         ]
 
-        # 1️⃣ Transporter-specific rate
+        # Transporter-specific rate
         if party_id:
             customer_rate = self.search(
                 domain_date + [("transporter_id", "=", party_id)],
@@ -99,7 +99,7 @@ class TransportB2BRate(models.Model):
                     "rate_id": customer_rate.id,
                 }
 
-        # 2️⃣ Base rate (transporter_id = False)
+        # Base rate (transporter_id = False)
         base_rate = self.search(
             domain_date + [("transporter_id", "=", False)],
             order="valid_from desc",
@@ -113,7 +113,7 @@ class TransportB2BRate(models.Model):
                 "rate_id": base_rate.id,
             }
 
-        # 3️⃣ No rate found
+        # No rate found
         return {
             "rate": 0.0,
             "source": "none",
