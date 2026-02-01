@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- ===============================
+         Tree View: Customer Invoices List
+    =============================== -->
+    <record id="view_account_move_invoice_tree" model="ir.ui.view">
+        <field name="name">account.move.invoice.tree</field>
+        <field name="model">account.move</field>
+        <field name="arch" type="xml">
+            <tree create="false" edit="false" delete="false" string="Invoices">
+                <field name="name" string="Invoice" />
+                <field name="partner_id" string="Customer" />
+                <field name="invoice_date" />
+                <field name="invoice_date_due" />
+                <field name="move_type" />
+                <field name="amount_total" />
+                <field name="amount_residual" />
+                <field name="payment_state"
+                    widget="badge"
+                    decoration-danger="payment_state == 'not_paid'"
+                    decoration-warning="payment_state == 'partial'"
+                    decoration-success="payment_state == 'paid'" />
+            </tree>
+        </field>
+    </record>
+
+    <!-- ===============================
+         Search / Filter View: Paid / Partial / Unpaid
+    =============================== -->
+    <record id="view_account_move_invoice_search" model="ir.ui.view">
+        <field name="name">account.move.invoice.search</field>
+        <field name="model">account.move</field>
+        <field name="arch" type="xml">
+            <search string="Invoices">
+                <field name="partner_id" />
+                <field name="invoice_date" />
+                <field name="state" string="Status" />
+                <filter string="All" name="all" domain="[]" />
+                <filter string="Paid" name="paid" domain="[('payment_state','=','paid')]" />
+                <filter string="Partial" name="partial" domain="[('payment_state','=','partial')]" />
+                <filter string="Unpaid" name="unpaid" domain="[('payment_state','=','not_paid')]" />
+                <filter string="Posted" name="posted" domain="[('state','=','posted')]" />
+                <filter string="Draft" name="draft" domain="[('state','=','draft')]" />
+            </search>
+        </field>
+    </record>
+
+    <!-- ===============================
+         Action: Open Invoice List
+    =============================== -->
+    <record id="action_account_move_invoice_list" model="ir.actions.act_window">
+        <field name="name">Customer Invoices</field>
+        <field name="res_model">account.move</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_account_move_invoice_tree" />
+        <field name="search_view_id" ref="view_account_move_invoice_search" />
+        <field name="domain">[('move_type','=','out_invoice')]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No invoices found.
+            </p>
+        </field>
+    </record>
+
+</odoo>

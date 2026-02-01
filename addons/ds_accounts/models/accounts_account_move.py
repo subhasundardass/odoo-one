@@ -7,80 +7,36 @@ class DsAccountMove(models.Model):
     # _name = "ds.accounts.account.move"
     _inherit = "account.move"
 
-    @api.model
-    def create(self, vals):
-        # Assign a sequence-like name if needed
-        if vals.get("name", "New") == "New":
-            vals["name"] = (
-                self.env["ir.sequence"].next_by_code("accounts.journal.entry") or "New"
-            )
-        return super().create(vals)
+    company_id = fields.Many2one(
+        "res.company", required=True, default=lambda self: self.env.company
+    )
+    # unpaid_invoice_ids = fields.Many2many(
+    #     "account.move",
+    #     string="Unpaid Invoices",
+    #     domain="[('partner_id','=',partner_id),('move_type','=','out_invoice'),('payment_state','in',['not_paid','partial'])]",
+    #     compute="_compute_unpaid_invoices",
+    # )
+    # receipt_amount = fields.Monetary(
+    #     string="Receipt Amount",
+    #     currency_field="currency_id",
+    #     default=100.0,
+    #     help="Total amount received to apply on unpaid invoices",
+    # )
+    # total_due = fields.Monetary(
+    #     string="Total Due",
+    #     currency_field="currency_id",
+    #     compute="_compute_total_due",
+    #     store=False,  # recompute dynamically
+    # )
 
     # @api.model
-    # def create_journal_entry(
-    #     self, name, amount, trip_type="local", partner_id=None, date=None
-    # ):
-    #     """
-    #     Automatically create a journal entry for a TMS trip
-    #     """
-    #     if amount <= 0:
-    #         raise ValidationError("Amount must be greater than zero")
-
-    #     if not date:
-    #         date = fields.Date.today()
-
-    #     # Pick journal based on trip type
-    #     journal = self.env["accounts.journal"].search(
-    #         [("trip_type", "=", trip_type)], limit=1
-    #     )
-
-    #     if not journal:
-    #         raise ValidationError(f"No journal configured for trip type: {trip_type}")
-
-    #     # Use default debit/credit accounts from the journal
-    #     debit_account = journal.default_trip_debit_account_id
-    #     credit_account = journal.default_trip_credit_account_id
-
-    #     if not debit_account or not credit_account:
-    #         raise ValidationError(
-    #             f"Journal {journal.name} does not have default accounts set"
+    # def create(self, vals):
+    #     # Assign a sequence-like name if needed
+    #     if vals.get("name", "New") == "New":
+    #         vals["name"] = (
+    #             self.env["ir.sequence"].next_by_code("accounts.journal.entry") or "New"
     #         )
-
-    #     # Create the journal entry
-    #     move = self.create(
-    #         {
-    #             "journal_id": journal.id,
-    #             "date": date,
-    #             "line_ids": [
-    #                 (
-    #                     0,
-    #                     0,
-    #                     {
-    #                         "account_id": debit_account.id,
-    #                         "debit": amount,
-    #                         "credit": 0.0,
-    #                         "partner_id": partner_id,
-    #                         "name": name,
-    #                     },
-    #                 ),
-    #                 (
-    #                     0,
-    #                     0,
-    #                     {
-    #                         "account_id": credit_account.id,
-    #                         "debit": 0.0,
-    #                         "credit": amount,
-    #                         "partner_id": partner_id,
-    #                         "name": name,
-    #                     },
-    #                 ),
-    #             ],
-    #         }
-    #     )
-
-    #     # Post the entry
-    #     move.action_post()
-    #     return move
+    #     return super().create(vals)
 
     @api.model
     def create_journal_entry(

@@ -20,20 +20,26 @@
         parent="menu_accounts_root"
         sequence="20" />
     
-    <menuitem id="menu_accounts_invoice" name="Invoices"
+        <menuitem id="menu_accounts_invoice" name="Invoices"
         parent="menu_accounts_operation"
-        action="action_dummy" sequence="1" />
+        action="action_account_move_invoice_list" sequence="1" />
+    
+        <menuitem
+        id="menu_accounts_receipt"
+        name="Customer Receipts"
+        parent="menu_accounts_operation"
+        action="action_accounts_customer_receipt" sequence="10" />
 
-    <menuitem id="menu_accounts_voucher" name="Vouchers"
+    <!-- <menuitem
+        id="menu_accounts_voucher" name="Vouchers"
         parent="menu_accounts_operation"
         action="action_dummy" sequence="2" />
     <menuitem id="menu_accounts_payment" name="Payments"
         parent="menu_accounts_operation"
         action="action_dummy" sequence="3" />
-    <menuitem id="menu_accounts_receipt" name="Receipts"
-        parent="menu_accounts_operation"
-        action="action_dummy" sequence="4" />
-    <menuitem id="menu_accounts_contra" name="Contra"
+    
+    <menuitem
+        id="menu_accounts_contra" name="Contra"
         parent="menu_accounts_operation"
         action="action_dummy" sequence="5" />
 
@@ -45,13 +51,14 @@
     <menuitem id="menu_accounts_credit_note"
         name="Credit Note"
         parent="menu_accounts_operation"
-        action="action_dummy" sequence="7" />
+        action="action_dummy" sequence="7" /> -->
 
     <!-- ===================== -->
     <!-- REPORTS MENU -->
     <!-- ===================== -->
 
-    <menuitem id="menu_accounts_reports" name="Reports"
+    <menuitem
+        id="menu_accounts_reports" name="Reports"
         parent="menu_accounts_root"
         sequence="50" />
 
