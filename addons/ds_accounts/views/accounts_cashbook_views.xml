@@ -1,0 +1,19 @@
+<odoo>
+    <record id="action_ds_cashbook" model="ir.actions.act_window">
+        <field name="name">Cashbook</field>
+        <field name="res_model">account.move</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">
+            [('journal_id.type','=','cash'), ('state','=','posted')]
+        </field>
+    </record>
+
+
+    <record id="action_accounts_cashbook" model="ir.actions.act_window">
+        <field name="name">Cashbook</field>
+        <field name="res_model">account.move</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+
+</odoo>

@@ -4,6 +4,7 @@ from odoo.exceptions import ValidationError
 
 class AccountsCustomerReceipt(models.Model):
     _name = "ds.accounts.customer.receipt"
+    _inherit = ["mail.thread", "mail.activity.mixin"]
     _description = "Customer Receipt"
 
     partner_id = fields.Many2one("res.partner", required=True)

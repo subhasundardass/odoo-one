@@ -66,7 +66,13 @@
         parent="menu_accounts_reports"
         action="action_dummy" sequence="10" />
 
-    <menuitem id="menu_accounts_report_trial_balance"
+        <menuitem id="menu_accounts_report_cash_book"
+        name="Cash Book"
+        parent="menu_accounts_reports"
+        action="action_accounts_cashbook" sequence="100" /> 
+
+    <menuitem
+        id="menu_accounts_report_trial_balance"
         name="Trial Balance"
         parent="menu_accounts_reports"
         action="action_dummy" sequence="20" />
