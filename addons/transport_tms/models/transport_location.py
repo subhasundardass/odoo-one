@@ -16,7 +16,7 @@ class TransportLocation(models.Model):
         help="3–6 character code used in routing and documents",
     )
 
-    address = fields.Text(string="Address")
+    address = fields.Text(string="Address", required=True)
     city_id = fields.Many2one("transport.city", string="City", required=True)
     state_id = fields.Many2one(
         "res.country.state",
@@ -144,6 +144,7 @@ class TransportLocation(models.Model):
         """
         if self.owner_type == "own":
             self.routing_type = "hub"
+            self.partner_id = False  # clear partner when ownership = own
         else:
             self.routing_type = "spoke"
 
@@ -161,7 +162,7 @@ class TransportLocation(models.Model):
             # -------------------------
             if rec.owner_type == "customer":
                 rec.routing_type = "spoke"
-                rec.operational_type = "pickup_point"
+                # rec.operational_type = "pickup_point"
 
             # -------------------------
             # THIRD PARTY LOCATIONS
@@ -177,8 +178,49 @@ class TransportLocation(models.Model):
             # OWN LOCATIONS
             # -------------------------
             elif rec.owner_type == "own":
-                # Do NOT force hub
+                rec.routing_type = "hub"  # Force hub
+                rec.operational_type = "hub"  # Force hub operations
+                # rec.facility_type = "warehouse"  # Force warehouse
                 rec.is_handover_point = False
+                
+
+    @api.constrains("owner_type", "operational_type")
+    def _check_customer_operational_type(self):
+        for rec in self:
+            if rec.owner_type == "customer" and rec.operational_type in ["hub","handover_point",]:
+                raise ValidationError(
+                    "Customers can only have operational type: Pickup Point or Delivery Point"
+                )
+
+    @api.constrains("owner_type", "facility_type")
+    def _check_facility_type_vs_owner(self):
+        for rec in self:
+            # Own locations cannot be customer sites
+            if rec.owner_type == "own" and rec.facility_type == "customer_site":
+                raise ValidationError(
+                    "Own locations cannot have 'Customer Address' category"
+                )
+        
+            # Customers cannot own public infrastructure
+            if rec.owner_type == "customer" and rec.facility_type in [
+                "railway", "airport", "bus_stand", "dock"
+            ]:
+                raise ValidationError(
+                    "Customers can not select category as railway stations, airports, bus stands, or docks."
+                )
+
+    @api.constrains('owner_type', 'routing_type', 'operational_type')
+    def _check_own_must_be_hub(self):
+        for rec in self:
+            if rec.owner_type == 'own':
+                if rec.routing_type != 'hub':
+                    raise ValidationError(
+                        "Own locations must have Network Role as 'Hub'"
+                    )
+                if rec.operational_type != 'hub':
+                    raise ValidationError(
+                        "Own locations must have Operational Role as 'Hub Operations'"
+                    )
 
     @api.constrains("owner_type", "partner_id")
     def _check_partner_requirement(self):
@@ -186,6 +228,10 @@ class TransportLocation(models.Model):
             if rec.owner_type in ("customer", "third_party") and not rec.partner_id:
                 raise ValidationError(
                     "Customer or Third-Party locations must have a linked partner."
+                )
+            if rec.owner_type == 'own' and rec.partner_id:  # Preventing any agency type when ownership is own
+                raise ValidationError(
+                    "Own locations should not have a partner."
                 )
 
     @api.constrains("is_handover_point", "routing_type")
@@ -231,14 +277,16 @@ class TransportLocation(models.Model):
                 raise ValidationError("Only own locations can be operational hubs.")
 
     # ---------------------------------------------------------
-    # CREATE HOOK (SAFE)
+    # location deletion
     # ---------------------------------------------------------
     def unlink(self):
         for rec in self:
-            used = self.env["transport.movement"].search_count(
-                [("location_ids", "in", rec.id)]
-            )
-            if used:
+            # Checking if location is used as pickup
+            used_as_pickup = self.env["transport.movement"].search_count([("pickup_location_id", "=", rec.id)])
+            # Checking if location is used as delivery
+            used_as_delivery = self.env["transport.movement"].search_count([("delivery_location_id", "=", rec.id)])
+        
+            if used_as_pickup or used_as_delivery:
                 raise ValidationError(
                     "Location is already used in movements and cannot be deleted."
                 )

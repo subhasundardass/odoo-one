@@ -1,6 +1,6 @@
 from odoo import models, fields
 
-
+# greg
 class FleetVehicle(models.Model):
     _inherit = "fleet.vehicle"
 
