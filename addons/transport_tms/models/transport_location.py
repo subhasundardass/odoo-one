@@ -192,6 +192,23 @@ class TransportLocation(models.Model):
                     "Customers can only have operational type: Pickup Point or Delivery Point"
                 )
 
+    @api.constrains("owner_type", "facility_type")
+    def _check_facility_type_vs_owner(self):
+        for rec in self:
+            # Own locations cannot be customer sites
+            if rec.owner_type == "own" and rec.facility_type == "customer_site":
+                raise ValidationError(
+                    "Own locations cannot have 'Customer Address' category"
+                )
+        
+            # Customers cannot own public infrastructure
+            if rec.owner_type == "customer" and rec.facility_type in [
+                "railway", "airport", "bus_stand", "dock"
+            ]:
+                raise ValidationError(
+                    "Customers can not select category as railway stations, airports, bus stands, or docks."
+                )
+
     @api.constrains('owner_type', 'routing_type', 'operational_type')
     def _check_own_must_be_hub(self):
         for rec in self:
