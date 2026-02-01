@@ -16,7 +16,7 @@ class TransportLocation(models.Model):
         help="3–6 character code used in routing and documents",
     )
 
-    address = fields.Text(string="Address")
+    address = fields.Text(string="Address", required=True)
     city_id = fields.Many2one("transport.city", string="City", required=True)
     state_id = fields.Many2one(
         "res.country.state",
@@ -144,6 +144,7 @@ class TransportLocation(models.Model):
         """
         if self.owner_type == "own":
             self.routing_type = "hub"
+            self.partner_id = False  # clear partner when ownership = own
         else:
             self.routing_type = "spoke"
 
@@ -179,6 +180,7 @@ class TransportLocation(models.Model):
             elif rec.owner_type == "own":
                 rec.routing_type = "hub"  # Force hub
                 rec.operational_type = "hub"  # Force hub operations
+                # rec.facility_type = "warehouse"  # Force warehouse
                 rec.is_handover_point = False
                 
 
@@ -209,6 +211,10 @@ class TransportLocation(models.Model):
             if rec.owner_type in ("customer", "third_party") and not rec.partner_id:
                 raise ValidationError(
                     "Customer or Third-Party locations must have a linked partner."
+                )
+            if rec.owner_type == 'own' and rec.partner_id:  # Preventing any agency type when ownership is own
+                raise ValidationError(
+                    "Own locations should not have a partner."
                 )
 
     @api.constrains("is_handover_point", "routing_type")
@@ -254,14 +260,16 @@ class TransportLocation(models.Model):
                 raise ValidationError("Only own locations can be operational hubs.")
 
     # ---------------------------------------------------------
-    # CREATE HOOK (SAFE)
+    # location deletion
     # ---------------------------------------------------------
     def unlink(self):
         for rec in self:
-            used = self.env["transport.movement"].search_count(
-                [("location_ids", "in", rec.id)]
-            )
-            if used:
+            # Checking if location is used as pickup
+            used_as_pickup = self.env["transport.movement"].search_count([("pickup_location_id", "=", rec.id)])
+            # Checking if location is used as delivery
+            used_as_delivery = self.env["transport.movement"].search_count([("delivery_location_id", "=", rec.id)])
+        
+            if used_as_pickup or used_as_delivery:
                 raise ValidationError(
                     "Location is already used in movements and cannot be deleted."
                 )
