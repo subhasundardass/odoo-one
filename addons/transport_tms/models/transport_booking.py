@@ -1,4 +1,4 @@
-from odoo import api, fields, models, _
+from odoo import api, fields, models, _, Command
 from odoo.exceptions import ValidationError, UserError
 import logging
 
@@ -651,6 +651,13 @@ class TransportBooking(models.Model):
                         },
                     )
                 ],
+                "invoice_line_ids": Command.create(
+                    {
+                        "name": f"Transport Charges - {self.name}",
+                        "quantity": 1,
+                        "price_unit": self.total_amount,
+                    }
+                ),
             }
         )
 

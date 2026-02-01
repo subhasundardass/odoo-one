@@ -106,3 +106,22 @@ docker exec -it odoo-one-db-1 psql -U odoo -d postgres
 docker exec -it odoo-one-odoo17-1 bash
 # python 
 odoo shell -d odoo17
+
+
+## Team Git Rule
+1. main - production, stable, release code
+2. feature-dev - final test with all module and functions 
+3. sit-dev - integration and testing 
+
+*Developer workflow
+1. git checkout your_branch
+2. git fetch origin
+3. git merge origin/sit-dev ( fix conflicts if any)
+4. git push origin your_branch
+
+Then raise PR
+Source: sit-dev
+Compare: your_branch
+
+Note
+Ignore conflicts resolve at GitHub, do it locally
